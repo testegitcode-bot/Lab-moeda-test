@@ -4,6 +4,19 @@ import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
 import type { Instituicao, Usuario } from '../types';
 
+function formatCPF(value: string): string {
+  const digits = value.replace(/\D/g, '').slice(0, 11);
+  return digits
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+}
+
+function formatRG(value: string): string {
+  // Keep alphanumeric and dots/dashes, max 20 chars
+  return value.replace(/[^a-zA-Z0-9.\-]/g, '').slice(0, 20);
+}
+
 export function CadastroAlunoPage() {
   const [form, setForm] = useState({
     nome: '', email: '', senha: '', cpf: '', rg: '',
@@ -20,17 +33,31 @@ export function CadastroAlunoPage() {
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    if (name === 'cpf') {
+      setForm(prev => ({ ...prev, cpf: formatCPF(value) }));
+    } else if (name === 'rg') {
+      setForm(prev => ({ ...prev, rg: formatRG(value) }));
+    } else {
+      setForm(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErro('');
-    setLoading(true);
 
+    const cpfDigits = form.cpf.replace(/\D/g, '');
+    if (cpfDigits.length !== 11) {
+      setErro('CPF deve conter exatamente 11 dígitos.');
+      return;
+    }
+
+    setLoading(true);
     try {
       const usuario = await api.cadastrarAluno({
         ...form,
+        cpf: cpfDigits,
         instituicaoId: Number(form.instituicaoId),
       }) as Usuario;
       login(usuario);
@@ -73,11 +100,30 @@ export function CadastroAlunoPage() {
               </div>
               <div>
                 <label className="form-label">CPF</label>
-                <input name="cpf" className="form-input" placeholder="000.000.000-00" value={form.cpf} onChange={handleChange} required />
+                <input
+                  name="cpf"
+                  className="form-input"
+                  placeholder="000.000.000-00"
+                  value={form.cpf}
+                  onChange={handleChange}
+                  maxLength={14}
+                  inputMode="numeric"
+                  required
+                />
+                <p className="text-xs text-gray-400 mt-1">Somente números (11 dígitos)</p>
               </div>
               <div>
                 <label className="form-label">RG</label>
-                <input name="rg" className="form-input" placeholder="00.000.000-0" value={form.rg} onChange={handleChange} required />
+                <input
+                  name="rg"
+                  className="form-input"
+                  placeholder="00.000.000-0"
+                  value={form.rg}
+                  onChange={handleChange}
+                  maxLength={20}
+                  required
+                />
+                <p className="text-xs text-gray-400 mt-1">Máximo 20 caracteres</p>
               </div>
               <div>
                 <label className="form-label">Curso</label>

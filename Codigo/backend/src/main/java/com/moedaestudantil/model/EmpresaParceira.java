@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmpresaParceira extends Usuario {
 
-    @Column(unique = true)
+    @Column(length = 14, unique = true)
     private String cnpj;
 
     @Column(columnDefinition = "TEXT")

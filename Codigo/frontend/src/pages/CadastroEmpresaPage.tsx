@@ -4,6 +4,15 @@ import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
 import type { Usuario } from '../types';
 
+function formatCNPJ(value: string): string {
+  const digits = value.replace(/\D/g, '').slice(0, 14);
+  return digits
+    .replace(/(\d{2})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d)/, '$1.$2')
+    .replace(/(\d{3})(\d)/, '$1/$2')
+    .replace(/(\d{4})(\d{1,2})$/, '$1-$2');
+}
+
 export function CadastroEmpresaPage() {
   const [form, setForm] = useState({
     nome: '', email: '', senha: '', cnpj: '', descricao: '',
@@ -14,16 +23,27 @@ export function CadastroEmpresaPage() {
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    if (name === 'cnpj') {
+      setForm(prev => ({ ...prev, cnpj: formatCNPJ(value) }));
+    } else {
+      setForm(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErro('');
-    setLoading(true);
 
+    const cnpjDigits = form.cnpj.replace(/\D/g, '');
+    if (cnpjDigits.length !== 14) {
+      setErro('CNPJ deve conter exatamente 14 dígitos.');
+      return;
+    }
+
+    setLoading(true);
     try {
-      const usuario = await api.cadastrarEmpresa(form) as Usuario;
+      const usuario = await api.cadastrarEmpresa({ ...form, cnpj: cnpjDigits }) as Usuario;
       login(usuario);
       navigate('/dashboard/empresa');
     } catch (err: unknown) {
@@ -62,7 +82,17 @@ export function CadastroEmpresaPage() {
             </div>
             <div>
               <label className="form-label">CNPJ</label>
-              <input name="cnpj" className="form-input" placeholder="00.000.000/0000-00" value={form.cnpj} onChange={handleChange} required />
+              <input
+                name="cnpj"
+                className="form-input"
+                placeholder="00.000.000/0000-00"
+                value={form.cnpj}
+                onChange={handleChange}
+                maxLength={18}
+                inputMode="numeric"
+                required
+              />
+              <p className="text-xs text-gray-400 mt-1">Somente números (14 dígitos)</p>
             </div>
             <div>
               <label className="form-label">Descrição da Empresa</label>

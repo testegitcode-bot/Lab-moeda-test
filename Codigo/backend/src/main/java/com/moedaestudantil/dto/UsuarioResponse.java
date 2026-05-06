@@ -27,7 +27,7 @@ public class UsuarioResponse {
         dto.setTipo(usuario.getTipo().name());
 
         if (usuario instanceof com.moedaestudantil.model.Aluno aluno) {
-            dto.setSaldoMoedas(aluno.getSaldoMoedas());
+            dto.setSaldoMoedas(aluno.getSaldoMoedas() != null ? aluno.getSaldoMoedas() : 0);
             dto.setCurso(aluno.getCurso());
             dto.setRg(aluno.getRg());
             dto.setEndereco(aluno.getEndereco());
@@ -36,7 +36,7 @@ public class UsuarioResponse {
                 dto.setInstituicaoNome(aluno.getInstituicao().getNome());
             }
         } else if (usuario instanceof com.moedaestudantil.model.Professor professor) {
-            dto.setSaldoMoedas(professor.getSaldoMoedas());
+            dto.setSaldoMoedas(professor.getSaldoMoedas() != null ? professor.getSaldoMoedas() : 0);
             dto.setDepartamento(professor.getDepartamento());
             if (professor.getInstituicao() != null) {
                 dto.setInstituicaoId(professor.getInstituicao().getId());

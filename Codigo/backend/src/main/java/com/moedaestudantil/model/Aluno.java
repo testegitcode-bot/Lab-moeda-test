@@ -13,6 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Aluno extends Usuario {
 
+    @Column(length = 11, unique = true)
+    private String cpf;
+
+    @Column(length = 20)
     private String rg;
 
     private String endereco;

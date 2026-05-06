@@ -52,6 +52,7 @@ public class CadastroController {
         aluno.setEmail(request.getEmail());
         aluno.setSenha(request.getSenha());
         aluno.setTipo(Usuario.TipoUsuario.ALUNO);
+        aluno.setCpf(request.getCpf());
         aluno.setRg(request.getRg());
         aluno.setEndereco(request.getEndereco());
         aluno.setCurso(request.getCurso());
