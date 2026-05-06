@@ -1,0 +1,112 @@
+@startuml
+!theme plain
+skinparam linetype ortho
+skinparam nodesep 100
+skinparam ranksep 80
+
+entity "Usuario (Abstract)" as usuario {
+  * id : LONG <<PK>>
+  --
+  * nome : VARCHAR(100)
+  * email : VARCHAR(100) <<Unique>>
+  * senha : VARCHAR(255)
+  * cpf : VARCHAR(11) <<Unique>>
+}
+
+entity "Instituicao" as instituicao {
+  * id : LONG <<PK>>
+  --
+  * nome : VARCHAR(100)
+  * sigla : VARCHAR(10)
+}
+
+' PERFIS  
+entity "Aluno" as aluno {
+  * usuario_id : LONG <<PK, FK>>
+  --
+  * rg : VARCHAR(20)
+  * endereco : VARCHAR(255)
+  * curso : VARCHAR(100)
+  * saldo_moedas : INT
+  * instituicao_id : LONG <<FK>>
+}
+
+entity "Professor" as professor {
+  * usuario_id : LONG <<PK, FK>>
+  --
+  * departamento : VARCHAR(100)
+  * saldo_moedas : INT
+  * instituicao_id : LONG <<FK>>
+}
+
+entity "Empresa_Parceira" as empresa {
+  * usuario_id : LONG <<PK, FK>>
+  --
+  * cnpj : VARCHAR(14) <<Unique>>
+  * nome_fantasia : VARCHAR(100)
+  * descricao : TEXT
+}
+
+' FUNCIONALIDADES 
+entity "Vantagem" as vantagem {
+  * id : LONG <<PK>>
+  --
+  * nome : VARCHAR(100)
+  * descricao : TEXT
+  foto_url : VARCHAR(255)
+  * custo_moedas : INT
+  * estoque : INT 
+  * ativa : BOOLEAN
+  * empresa_id : LONG <<FK>>
+}
+
+entity "Transacao" as transacao {
+  * id : LONG <<PK>>
+  --
+  * data : DATETIME
+  * quantidade : INT
+  * mensagem : TEXT <<NOT NULL>>
+  * tipo : VARCHAR(20) 
+  * remetente_id : LONG <<FK>>
+  * destinatario_id : LONG <<FK>>
+}
+
+entity "Resgate" as resgate {
+  * id : LONG <<PK>>
+  --
+  * data_resgate : DATETIME
+  * codigo_cupom : VARCHAR(50) <<Unique>>
+  * status_cupom : VARCHAR(30)
+  * aluno_id : LONG <<FK>>
+  * vantagem_id : LONG <<FK>>
+}
+
+entity "Notificacao_Email" as notificacao {
+  * id : LONG <<PK>>
+  --
+  * destinatario : VARCHAR(100)
+  * assunto : VARCHAR(150)
+  * mensagem : TEXT
+  * data_envio : DATETIME
+  status : VARCHAR(30)
+}
+
+'RELACIONAMENTOS
+usuario <|--down- aluno
+usuario <|--down- professor
+usuario <|--down- empresa
+
+instituicao ||-down-o{ aluno
+instituicao ||-down-o{ professor
+
+empresa ||-down-o{ vantagem
+aluno ||-down-o{ resgate
+vantagem ||-down-o{ resgate
+
+aluno ||-right-o{ transacao : "recebe"
+professor ||-left-o{ transacao : "envia"
+
+transacao ||-down-o{ notificacao
+resgate ||-down-o{ notificacao
+
+@enduml

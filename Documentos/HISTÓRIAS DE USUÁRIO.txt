@@ -1,0 +1,65 @@
+HISTÓRIAS DE USUÁRIO
+
+US01 - Aluno
+Descrição: Quero me cadastrar com meus dados e escolher minha instituição para participar do sistema.
+Critérios:
+- Preencher todos os dados obrigatórios: nome, email, CPF, RG, endereço, instituição e curso.
+- Selecionar uma instituição que já esteja pré-cadastrada no sistema.
+
+US02 - Professor
+Descrição: Quero enviar moedas para os alunos como reconhecimento por bom desempenho.
+Critérios:
+- Possuir saldo disponível para a transação.
+- Escrever obrigatoriamente o motivo do envio em uma mensagem aberta.
+- O saldo não utilizado acumula para o próximo semestre (1.000 novas moedas + saldo atual).
+
+US03 - Aluno
+Descrição: Quero receber um aviso por e-mail quando ganhar moedas.
+Critérios:
+- O sistema deve disparar o e-mail automaticamente após a confirmação do envio pelo professor.
+
+US04 - Aluno e Professor
+Descrição: Quero ver meu saldo e histórico de transações (extrato).
+Critérios:
+- O professor visualiza moedas enviadas; o Aluno visualiza moedas recebidas e trocadas.
+- O saldo atual deve aparecer em destaque no extrato.
+
+US05 - Empresa Parceira
+Descrição: Quero me cadastrar e listar vantagens para os alunos.
+Critérios:
+- Cada vantagem deve conter obrigatoriamente nome, descrição, foto e valor em moedas.
+
+US06 - Aluno
+Descrição: Quero trocar minhas moedas por vantagens do catálogo.
+Critérios:
+- O sistema deve validar se há saldo suficiente e realizar o desconto imediato.
+- Um e-mail com o código do cupom deve ser enviado ao aluno e outro à empresa parceira para conferência.
+
+US07 - Aluno, Professor e Empresa Parceira
+Descrição: Quero fazer login no sistema para acessar minha conta.
+Critérios:
+- O sistema deve validar o e-mail e a senha cadastrados para liberar o acesso.
+- Um e-mail com o código do cupom deve ser enviado ao aluno e outro à empresa.
+
+US08 - Aluno e Professor
+Descrição: Quero filtrar meu extrato por período para encontrar transações específicas.
+Critérios:
+- O usuário deve poder definir uma data de início e fim para a consulta.
+- O sistema deve exibir apenas os resultados dentro do intervalo selecionado.
+
+US09 - Empresa Parceira
+Descrição: Quero anexar fotos às vantagens cadastradas para torná-las mais atrativas.
+Critérios:
+- O sistema deve permitir o upload de arquivos de imagem no cadastro da vantagem.
+- A imagem deve ser exibida corretamente no catálogo de vantagens do aluno.
+
+US10 - Instituição
+Descrição: Quero pré-cadastrar os professores da minha instituição no sistema.
+Critérios:
+- A instituição deve fornecer nome, CPF e departamento do professor.
+- Após o cadastro, o professor deve estar apto a receber seu saldo semestral de moedas.
+
+US11 - Aluno e Empresa
+Descrição: Quero pesquisar por vantagens específicas no catálogo.
+Critérios:
+- O sistema deve permitir a busca por nome ou categoria da vantagem.

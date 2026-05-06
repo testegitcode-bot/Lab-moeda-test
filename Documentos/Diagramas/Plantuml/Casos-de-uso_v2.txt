@@ -1,0 +1,59 @@
+@startuml
+skinparam actorStyle awesome
+left to right direction
+
+' Atores
+actor "Usuário" as User
+package "Usuários do Sistema" {
+    actor "Aluno" as Alun
+    actor "Professor" as Prof
+    actor "Empresa Parceira" as Emp
+}
+actor "Instituição de Ensino" as Inst
+
+' Herança
+Alun -left-|> User
+Prof -left-|> User
+Emp -left-|> User
+
+rectangle "Sistema de Moeda Estudantil" {
+    
+    (Efetuar Login) as UC_Login
+    (Cadastrar Aluno) as UC_CadAlun
+    (Cadastrar Empresa) as UC_CadEmp
+    (Consultar Extrato) as UC_Extrato
+    (Distribuir Moedas) as UC_Doar
+    (Resgatar Vantagem) as UC_Resgate
+    (Gerenciar Vantagens) as UC_Vantagens
+    (Cadastrar Professor) as UC_CadProf
+    
+    ' Extensões
+    (Filtrar Extrato) as UC_Filtro
+    (Adicionar Foto) as UC_Foto
+    (Pesquisar Vantagem) as UC_pesq
+
+    ' Relações de Acesso
+    User --> UC_Login
+    Alun --> UC_CadAlun
+    Emp --> UC_CadEmp
+    Inst --> UC_CadProf
+    
+    ' Inclusões (relacionamentos)
+    UC_Extrato .right.> UC_Login : <<include>>
+    UC_Doar .right.> UC_Login : <<include>>
+    UC_Resgate .right.> UC_Login : <<include>>
+    UC_Vantagens .right.> UC_Login : <<include>>
+    
+    ' Extensões (relacionamentos)
+    UC_Filtro .up.> UC_Extrato : <<extend>>
+    UC_Foto .up.> UC_Vantagens : <<extend>>
+    UC_pesq .up.> UC_Vantagens : <<extend>>
+    
+    ' Links diretores
+    Alun --> UC_Extrato
+    Alun --> UC_Resgate
+    Prof --> UC_Doar
+    Prof --> UC_Extrato
+    Emp --> UC_Vantagens
+}
+@enduml
