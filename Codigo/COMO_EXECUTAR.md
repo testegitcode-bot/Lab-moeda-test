@@ -23,7 +23,11 @@ O servidor inicia em: http://localhost:8080
 **Credenciais do professor de teste:**
 - E-mail: `professor@teste.com`
 - Senha: `123456`
-
+Aluno
+-ricardo@gmail.com
+-123456
+Empresa
+-
 ---
 
 ## Frontend (React + Vite)
@@ -40,7 +44,7 @@ A aplicação abre em: http://localhost:5173
 
 ## Ordem de inicialização
 
-1. Iniciar o Backend primeiro (`./mvnw spring-boot:run`)
+1. Iniciar o Backend primeiro (`mvn spring-boot:run`)
 2. Iniciar o Frontend (`npm run dev`)
 3. Acessar http://localhost:5173
 
