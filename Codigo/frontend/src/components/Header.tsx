@@ -2,6 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import type { TipoUsuario } from '../types';
 
+const perfilRota: Partial<Record<TipoUsuario, string>> = {
+  ALUNO: '/perfil/aluno',
+  EMPRESA: '/perfil/empresa',
+};
+
 const tipoLabel: Record<TipoUsuario, string> = {
   ALUNO: 'Aluno',
   PROFESSOR: 'Professor',
@@ -23,13 +28,6 @@ export function Header() {
     navigate('/login');
   };
 
-  const getDashboardPath = () => {
-    if (usuario?.tipo === 'ALUNO') return '/dashboard/aluno';
-    if (usuario?.tipo === 'PROFESSOR') return '/dashboard/professor';
-    if (usuario?.tipo === 'EMPRESA') return '/dashboard/empresa';
-    return '/dashboard/aluno';
-  };
-
   if (!usuario) return null;
 
   return (
@@ -37,66 +35,34 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => navigate(getDashboardPath())}
-              className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-200"
-            >
-              <div className="w-8 h-8 bg-primary-400 rounded-lg flex items-center justify-center">
-                <svg className="w-5 h-5 text-primary-900" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 14a6 6 0 110-12 6 6 0 010 12zm.75-9.25a.75.75 0 00-1.5 0v2.5H7a.75.75 0 000 1.5h2.25v2.5a.75.75 0 001.5 0v-2.5H13a.75.75 0 000-1.5h-2.25v-2.5z"/>
-                </svg>
-              </div>
-              <span className="text-white font-semibold text-lg tracking-tight">Moeda Estudantil</span>
-            </button>
+            <div className="w-8 h-8 bg-primary-400 rounded-lg flex items-center justify-center">
+              <svg className="w-5 h-5 text-primary-900" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 14a6 6 0 110-12 6 6 0 010 12zm.75-9.25a.75.75 0 00-1.5 0v2.5H7a.75.75 0 000 1.5h2.25v2.5a.75.75 0 001.5 0v-2.5H13a.75.75 0 000-1.5h-2.25v-2.5z"/>
+              </svg>
+            </div>
+            <span className="text-white font-semibold text-lg tracking-tight">Moeda Estudantil</span>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-4">
-            {usuario.tipo === 'ALUNO' && (
-              <nav className="hidden sm:flex items-center gap-4">
-                <button
-                  onClick={() => navigate('/dashboard/aluno')}
-                  className="text-white text-sm font-medium hover:bg-primary-700 px-3 py-2 rounded-lg transition-colors duration-200"
-                >
-                  Painel
-                </button>
-                <button
-                  onClick={() => navigate('/aluno/extrato')}
-                  className="text-white text-sm font-medium hover:bg-primary-700 px-3 py-2 rounded-lg transition-colors duration-200"
-                >
-                  Extrato
-                </button>
-                <button
-                  onClick={() => navigate('/aluno/vantagens')}
-                  className="text-white text-sm font-medium hover:bg-primary-700 px-3 py-2 rounded-lg transition-colors duration-200"
-                >
-                  Vantagens
-                </button>
-              </nav>
-            )}
-
-            {usuario.tipo === 'EMPRESA' && (
-              <nav className="hidden sm:flex items-center gap-4">
-                <button
-                  onClick={() => navigate('/dashboard/empresa')}
-                  className="text-white text-sm font-medium hover:bg-primary-700 px-3 py-2 rounded-lg transition-colors duration-200"
-                >
-                  Painel
-                </button>
-                <button
-                  onClick={() => navigate('/empresa/relatorios')}
-                  className="text-white text-sm font-medium hover:bg-primary-700 px-3 py-2 rounded-lg transition-colors duration-200"
-                >
-                  Relatórios
-                </button>
-              </nav>
-            )}
-
+          <div className="flex items-center gap-4">
             <div className="hidden sm:flex flex-col items-end">
               <span className="text-white font-medium text-sm leading-tight">{usuario.nome}</span>
               <span className={`badge mt-0.5 ${tipoColor[usuario.tipo]}`}>
                 {tipoLabel[usuario.tipo]}
               </span>
             </div>
+
+            {perfilRota[usuario.tipo] && (
+              <button
+                onClick={() => navigate(perfilRota[usuario.tipo]!)}
+                title="Meu Perfil"
+                className="flex items-center gap-2 bg-primary-700 hover:bg-primary-600 text-white text-sm font-medium px-3 py-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-400"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <span className="hidden sm:inline">Perfil</span>
+              </button>
+            )}
 
             <button
               onClick={handleLogout}

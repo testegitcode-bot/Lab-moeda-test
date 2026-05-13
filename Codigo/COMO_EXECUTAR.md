@@ -18,9 +18,9 @@ mvn spring-boot:run
 
 O servidor inicia em: http://localhost:8080
 
-agora com docker fica assim:
-docker compose up -d
-
+- Console H2 (banco em memória visual): http://localhost:8080/h2-console
+  - JDBC URL: `jdbc:h2:file:./data/moeda_db`
+  - User: `sa` | Password: (em branco)
 
 **Credenciais do professor de teste:**
 - E-mail: `professor@teste.com`

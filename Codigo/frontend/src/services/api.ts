@@ -54,4 +54,16 @@ export const api = {
 
   deletarVantagem: (id: number) =>
     request(`/vantagens/${id}`, { method: 'DELETE' }),
+
+  atualizarPerfilAluno: (id: number, payload: object) =>
+    request(`/perfil/aluno/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    }),
+
+  atualizarPerfilEmpresa: (id: number, payload: object) =>
+    request(`/perfil/empresa/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    }),
 };
