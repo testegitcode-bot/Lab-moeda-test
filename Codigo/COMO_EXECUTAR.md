@@ -12,22 +12,19 @@
 ```bash
 cd Codigo/backend
 ./mvnw spring-boot:run
+ou
+mvn spring-boot:run
 ```
 
 O servidor inicia em: http://localhost:8080
 
-- Console H2 (banco em memória visual): http://localhost:8080/h2-console
-  - JDBC URL: `jdbc:h2:file:./data/moeda_db`
-  - User: `sa` | Password: (em branco)
+agora com docker fica assim:
+docker compose up -d
+
 
 **Credenciais do professor de teste:**
 - E-mail: `professor@teste.com`
 - Senha: `123456`
-Aluno
--ricardo@gmail.com
--123456
-Empresa
--
 ---
 
 ## Frontend (React + Vite)

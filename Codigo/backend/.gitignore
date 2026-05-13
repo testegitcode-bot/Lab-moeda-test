@@ -1,0 +1,63 @@
+# =========================
+# BACKEND - Spring Boot
+# =========================
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# H2 Database
+*.mv.db
+*.trace.db
+
+# Java compilado
+*.class
+
+# Gradle
+.gradle/
+build/
+
+# IntelliJ
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# VSCode
+.vscode/
+
+# logs
+*.log
+
+# Spring Boot
+spring.log
+
+# env
+application-local.properties
+application-dev.properties
+
+# compiled files
+*.class
+
+# generated files
+bin/
+out/
+
+# =========================
+# JAVA
+# =========================
+
+hs_err_pid*
+replay_pid*
+
+# =========================
+# Mac / Windows
+# =========================
+
+.DS_Store
+Thumbs.db

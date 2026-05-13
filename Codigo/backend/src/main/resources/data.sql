@@ -1,15 +1,22 @@
 -- Populate Instituicao
-MERGE INTO instituicao (id, nome) KEY(id)
-  VALUES (1, 'Universidade Federal de Minas Gerais (UFMG)');
-MERGE INTO instituicao (id, nome) KEY(id)
-  VALUES (2, 'Pontifícia Universidade Católica de Minas Gerais (PUC-MG)');
-MERGE INTO instituicao (id, nome) KEY(id)
-  VALUES (3, 'Centro Federal de Educação Tecnológica de Minas Gerais (CEFET-MG)');
+INSERT INTO instituicao (id, nome)
+  VALUES (1, 'Universidade Federal de Minas Gerais (UFMG)')
+  ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO instituicao (id, nome)
+  VALUES (2, 'Pontifícia Universidade Católica de Minas Gerais (PUC-MG)')
+  ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO instituicao (id, nome)
+  VALUES (3, 'Centro Federal de Educação Tecnológica de Minas Gerais (CEFET-MG)')
+  ON CONFLICT (id) DO NOTHING;
 
 -- Populate Usuario for test Professor
-MERGE INTO usuario (id, nome, email, senha, tipo) KEY(id)
-  VALUES (1, 'Prof. Carlos Silva', 'professor@teste.com', '123456', 'PROFESSOR');
+INSERT INTO usuario (id, nome, email, senha, tipo)
+  VALUES (1, 'Prof. Carlos Silva', 'professor@teste.com', '123456', 'PROFESSOR')
+  ON CONFLICT (id) DO NOTHING;
 
 -- Populate Professor linked to Usuario
-MERGE INTO professor (id, departamento, saldo_moedas, instituicao_id) KEY(id)
-  VALUES (1, 'Ciência da Computação', 1000, 1);
+INSERT INTO professor (id, departamento, saldo_moedas, instituicao_id)
+  VALUES (1, 'Ciência da Computação', 1000, 1)
+  ON CONFLICT (id) DO NOTHING;
