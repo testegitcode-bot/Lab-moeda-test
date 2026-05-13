@@ -9,6 +9,9 @@ import { DashboardProfessorPage } from './pages/DashboardProfessorPage';
 import { DashboardEmpresaPage } from './pages/DashboardEmpresaPage';
 import { PerfilAlunoPage } from './pages/PerfilAlunoPage';
 import { PerfilEmpresaPage } from './pages/PerfilEmpresaPage';
+import { ExtratoPage } from './pages/ExtratoPage';
+import { VantagensAlunoPage } from './pages/VantagensAlunoPage';
+import { RelatoriosEmpresaPage } from './pages/RelatoriosEmpresaPage';
 
 export default function App() {
   return (
@@ -38,6 +41,18 @@ export default function App() {
           <Route
             path="/perfil/empresa"
             element={<ProtectedRoute><PerfilEmpresaPage /></ProtectedRoute>}
+          />
+          <Route
+            path="/extrato"
+            element={<ProtectedRoute><ExtratoPage /></ProtectedRoute>}
+          />
+          <Route
+            path="/vantagens"
+            element={<ProtectedRoute><VantagensAlunoPage /></ProtectedRoute>}
+          />
+          <Route
+            path="/relatorios"
+            element={<ProtectedRoute><RelatoriosEmpresaPage /></ProtectedRoute>}
           />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
