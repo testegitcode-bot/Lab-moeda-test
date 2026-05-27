@@ -37,6 +37,9 @@ export const api = {
   listarInstituicoes: () =>
     request('/instituicoes'),
 
+  listarTodasVantagens: () =>
+    request('/vantagens'),
+
   listarVantagens: (empresaId: number) =>
     request(`/vantagens/empresa/${empresaId}`),
 
@@ -66,4 +69,13 @@ export const api = {
       method: 'PUT',
       body: JSON.stringify(payload),
     }),
+
+  solicitarResgate: (alunoId: number, vantagemId: number) =>
+    request('/resgates/solicitar', {
+      method: 'POST',
+      body: JSON.stringify({ alunoId, vantagemId }),
+    }),
+
+  listarCuponsAluno: (alunoId: number) =>
+    request(`/resgates/aluno/${alunoId}`),
 };

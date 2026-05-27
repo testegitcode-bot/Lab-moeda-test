@@ -26,6 +26,13 @@ public class VantagemController {
         this.empresaRepository = empresaRepository;
     }
 
+    // Lista todas as vantagens ativas (para o catálogo do aluno)
+    @GetMapping
+    public List<VantagemResponse> listarTodas() {
+        return vantagemRepository.findAll()
+                .stream().map(VantagemResponse::from).toList();
+    }
+
     @GetMapping("/empresa/{empresaId}")
     public List<VantagemResponse> listarPorEmpresa(@PathVariable Long empresaId) {
         return vantagemRepository.findByEmpresaId(empresaId)
@@ -42,8 +49,9 @@ public class VantagemController {
         Vantagem v = new Vantagem();
         v.setNome(request.getNome());
         v.setDescricao(request.getDescricao());
-        v.setFotoUrl(request.getFotoUrl());
         v.setCusto(request.getCusto());
+        v.setQuantidadeCupons(request.getQuantidadeCupons());
+        v.setDataValidade(request.getDataValidade());
         v.setEmpresa(empresaOpt.get());
 
         return ResponseEntity.ok(VantagemResponse.from(vantagemRepository.save(v)));
@@ -59,8 +67,9 @@ public class VantagemController {
         Vantagem v = opt.get();
         v.setNome(request.getNome());
         v.setDescricao(request.getDescricao());
-        v.setFotoUrl(request.getFotoUrl());
         v.setCusto(request.getCusto());
+        v.setQuantidadeCupons(request.getQuantidadeCupons());
+        v.setDataValidade(request.getDataValidade());
 
         return ResponseEntity.ok(VantagemResponse.from(vantagemRepository.save(v)));
     }

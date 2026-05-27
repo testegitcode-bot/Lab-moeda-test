@@ -25,8 +25,21 @@ export interface Vantagem {
   id: number;
   nome: string;
   descricao: string;
-  fotoUrl?: string;
   custo: number;
+  quantidadeCupons: number | null;
+  cuponsResgatados: number;
+  dataValidade: string | null;
   empresaId: number;
   empresaNome: string;
+}
+
+export interface Cupom {
+  id: number;
+  vantagemId: number;
+  vantagemNome: string;
+  empresaNome: string;
+  custoPago: number;
+  codigoCupom: string;
+  dataResgate: string;
+  status: 'ATIVO' | 'USADO' | 'EXPIRADO';
 }

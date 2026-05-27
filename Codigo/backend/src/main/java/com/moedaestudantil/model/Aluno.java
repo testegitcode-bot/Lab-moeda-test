@@ -26,6 +26,10 @@ public class Aluno extends Usuario {
     @Column(name = "saldo_moedas")
     private Integer saldoMoedas = 0;
 
+    // Isolado de listagens públicas e relatórios; usado exclusivamente para testes
+    @Column(name = "is_test_user", nullable = false)
+    private Boolean isTestUser = false;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "instituicao_id")
     private Instituicao instituicao;
