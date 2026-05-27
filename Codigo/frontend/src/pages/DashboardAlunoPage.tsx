@@ -1,8 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
 import { useAuth } from '../context/AuthContext';
 
 export function DashboardAlunoPage() {
   const { usuario } = useAuth();
+  const navigate = useNavigate();
   if (!usuario) return null;
 
   return (
@@ -14,6 +16,7 @@ export function DashboardAlunoPage() {
           <p className="text-gray-500 text-sm mt-1">Bem-vindo de volta, {usuario.nome.split(' ')[0]}!</p>
         </div>
 
+        {/* Top cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="card bg-gradient-to-br from-primary-700 to-primary-900 text-white border-0">
             <div className="flex items-center justify-between">
@@ -61,42 +64,58 @@ export function DashboardAlunoPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Quick actions */}
           <div className="card">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Meus Dados</h2>
-            <dl className="space-y-3">
-              <div className="flex justify-between text-sm">
-                <dt className="text-gray-500">Nome</dt>
-                <dd className="text-gray-900 font-medium">{usuario.nome}</dd>
-              </div>
-              <div className="flex justify-between text-sm">
-                <dt className="text-gray-500">E-mail</dt>
-                <dd className="text-gray-900 font-medium">{usuario.email}</dd>
-              </div>
-              {usuario.rg && (
-                <div className="flex justify-between text-sm">
-                  <dt className="text-gray-500">RG</dt>
-                  <dd className="text-gray-900 font-medium">{usuario.rg}</dd>
+            <h2 className="text-lg font-semibold text-gray-900 mb-5">Ações Disponíveis</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <button
+                onClick={() => navigate('/vantagens')}
+                className="group flex flex-col items-center gap-3 p-5 rounded-xl border-2 border-primary-100 bg-primary-50 hover:border-primary-400 hover:bg-primary-100 transition-all duration-200 text-left"
+              >
+                <div className="w-12 h-12 bg-primary-700 group-hover:bg-primary-800 rounded-xl flex items-center justify-center transition-colors duration-200">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                  </svg>
                 </div>
-              )}
-              {usuario.endereco && (
-                <div className="flex justify-between text-sm">
-                  <dt className="text-gray-500">Endereço</dt>
-                  <dd className="text-gray-900 font-medium text-right max-w-xs">{usuario.endereco}</dd>
+                <div className="text-center">
+                  <p className="font-semibold text-gray-900 text-sm">Visualizar Vantagens</p>
+                  <p className="text-gray-500 text-xs mt-1">Explore benefícios disponíveis</p>
                 </div>
-              )}
-            </dl>
+              </button>
+
+              <button
+                onClick={() => navigate('/extrato')}
+                className="group flex flex-col items-center gap-3 p-5 rounded-xl border-2 border-teal-100 bg-teal-50 hover:border-teal-400 hover:bg-teal-100 transition-all duration-200 text-left"
+              >
+                <div className="w-12 h-12 bg-teal-600 group-hover:bg-teal-700 rounded-xl flex items-center justify-center transition-colors duration-200">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <div className="text-center">
+                  <p className="font-semibold text-gray-900 text-sm">Extrato Completo</p>
+                  <p className="text-gray-500 text-xs mt-1">Veja todas as transações</p>
+                </div>
+              </button>
+            </div>
           </div>
 
+          {/* Timeline of recent activities */}
           <div className="card">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Atividades Recentes</h2>
-            <div className="flex flex-col items-center justify-center py-8 text-center">
-              <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
-                <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-                </svg>
+            <h2 className="text-lg font-semibold text-gray-900 mb-5">Atividades Recentes</h2>
+            <div className="relative">
+              {/* Timeline vertical line */}
+              <div className="absolute left-4 top-0 bottom-0 w-px bg-gray-100" aria-hidden="true" />
+
+              <div className="flex flex-col items-center justify-center py-10 text-center">
+                <div className="relative z-10 w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mb-4 ring-4 ring-white">
+                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                  </svg>
+                </div>
+                <p className="text-gray-500 text-sm font-medium">Nenhuma transação realizada ainda.</p>
+                <p className="text-gray-400 text-xs mt-1">Suas moedas aparecerão aqui.</p>
               </div>
-              <p className="text-gray-500 text-sm">Nenhuma transação realizada ainda.</p>
-              <p className="text-gray-400 text-xs mt-1">Suas moedas aparecerão aqui.</p>
             </div>
           </div>
         </div>
