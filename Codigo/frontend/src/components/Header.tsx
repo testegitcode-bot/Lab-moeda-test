@@ -46,9 +46,7 @@ export function Header() {
           <div className="flex items-center gap-4">
             <div className="hidden sm:flex flex-col items-end">
               <span className="text-white font-medium text-sm leading-tight">{usuario.nome}</span>
-              <span className={`badge mt-0.5 ${tipoColor[usuario.tipo]}`}>
-                {tipoLabel[usuario.tipo]}
-              </span>
+              <span className="text-[#4ADE80] font-medium text-sm leading-tight">{usuario.tipo.charAt(0).toUpperCase() + usuario.tipo.slice(1).toLowerCase()}</span>
             </div>
 
             {perfilRota[usuario.tipo] && (

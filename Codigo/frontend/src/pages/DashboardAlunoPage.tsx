@@ -1,5 +1,4 @@
 import { Header } from '../components/Header';
-import { SidebarAluno } from '../components/SidebarAluno';
 import { useAuth } from '../context/AuthContext';
 
 export function DashboardAlunoPage() {
@@ -9,9 +8,7 @@ export function DashboardAlunoPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Header />
-      <div className="flex flex-1">
-        <SidebarAluno />
-        <main className="flex-1 max-w-5xl w-full px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900">Meu Painel</h1>
           <p className="text-gray-500 text-sm mt-1">Bem-vindo de volta, {usuario.nome.split(' ')[0]}!</p>
@@ -103,8 +100,7 @@ export function DashboardAlunoPage() {
             </div>
           </div>
         </div>
-        </main>
-      </div>
+      </main>
     </div>
   );
 }

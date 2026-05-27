@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
 import type { Usuario } from '../types';
+import GreenDots from '../components/GreenDots';
 
 function formatCNPJ(value: string): string {
   const digits = value.replace(/\D/g, '').slice(0, 14);
@@ -54,8 +55,9 @@ export function CadastroEmpresaPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-950 via-primary-900 to-primary-800 flex items-center justify-center p-4">
-      <div className="w-full max-w-xl">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-[#071F2A] via-[#0B3D3A] to-[#148A6A] flex items-center justify-center p-4">
+        <GreenDots />
+      <div className="relative w-full max-w-xl">
         <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center w-14 h-14 bg-emerald-400 rounded-2xl mb-3 shadow-lg">
             <svg className="w-8 h-8 text-emerald-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">

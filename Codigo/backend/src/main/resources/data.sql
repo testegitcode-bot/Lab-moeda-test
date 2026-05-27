@@ -20,3 +20,6 @@ INSERT INTO usuario (id, nome, email, senha, tipo)
 INSERT INTO professor (id, departamento, saldo_moedas, instituicao_id)
   VALUES (1, 'Ciência da Computação', 1000, 1)
   ON CONFLICT (id) DO NOTHING;
+
+-- Corrigir sequence após inserts manuais
+SELECT setval(pg_get_serial_sequence('usuario', 'id'), (SELECT MAX(id) FROM usuario));

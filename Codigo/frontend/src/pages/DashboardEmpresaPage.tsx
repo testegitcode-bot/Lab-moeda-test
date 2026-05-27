@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Header } from '../components/Header';
-import { SidebarEmpresa } from '../components/SidebarEmpresa';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
 import type { Vantagem } from '../types';
@@ -82,9 +81,7 @@ export function DashboardEmpresaPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Header />
-      <div className="flex flex-1">
-        <SidebarEmpresa />
-        <main className="flex-1 max-w-5xl w-full px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Painel da Empresa</h1>
@@ -160,8 +157,7 @@ export function DashboardEmpresaPage() {
             </div>
           )}
         </div>
-        </main>
-      </div>
+      </main>
 
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
