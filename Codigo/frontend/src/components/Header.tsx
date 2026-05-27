@@ -1,10 +1,16 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import type { TipoUsuario } from '../types';
 
 const perfilRota: Partial<Record<TipoUsuario, string>> = {
   ALUNO: '/perfil/aluno',
   EMPRESA: '/perfil/empresa',
+};
+
+const dashboardRota: Record<TipoUsuario, string> = {
+  ALUNO: '/dashboard/aluno',
+  PROFESSOR: '/dashboard/professor',
+  EMPRESA: '/dashboard/empresa',
 };
 
 const alunoNavLinks = [
@@ -43,6 +49,7 @@ const tipoColor: Record<TipoUsuario, string> = {
 export function Header() {
   const { usuario, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     logout();
@@ -50,6 +57,9 @@ export function Header() {
   };
 
   if (!usuario) return null;
+
+  const homePath = dashboardRota[usuario.tipo];
+  const isOnDashboard = location.pathname === homePath;
 
   return (
     <header className="bg-primary-900 shadow-md sticky top-0 z-50">
@@ -65,6 +75,19 @@ export function Header() {
           </div>
 
           <div className="flex items-center gap-2">
+            {!isOnDashboard && (
+              <button
+                onClick={() => navigate(homePath)}
+                title="Voltar ao Painel"
+                className="flex items-center gap-2 bg-primary-600 hover:bg-primary-500 text-white text-sm font-medium px-3 py-2 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-400"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span className="hidden sm:inline">Painel</span>
+              </button>
+            )}
+
             <div className="hidden sm:flex flex-col items-end mr-2">
               <span className="text-white font-medium text-sm leading-tight">{usuario.nome}</span>
               <span className="text-[#4ADE80] font-medium text-sm leading-tight">{usuario.tipo.charAt(0).toUpperCase() + usuario.tipo.slice(1).toLowerCase()}</span>

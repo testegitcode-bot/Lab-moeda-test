@@ -9,6 +9,8 @@ import { DashboardProfessorPage } from './pages/DashboardProfessorPage';
 import { DashboardEmpresaPage } from './pages/DashboardEmpresaPage';
 import { PerfilAlunoPage } from './pages/PerfilAlunoPage';
 import { PerfilEmpresaPage } from './pages/PerfilEmpresaPage';
+import { VantagensPage } from './pages/VantagensPage';
+import { ExtratoPage } from './pages/ExtratoPage';
 
 export default function App() {
   return (
@@ -38,6 +40,14 @@ export default function App() {
           <Route
             path="/perfil/empresa"
             element={<ProtectedRoute><PerfilEmpresaPage /></ProtectedRoute>}
+          />
+          <Route
+            path="/vantagens"
+            element={<ProtectedRoute><VantagensPage /></ProtectedRoute>}
+          />
+          <Route
+            path="/extrato"
+            element={<ProtectedRoute><ExtratoPage /></ProtectedRoute>}
           />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
