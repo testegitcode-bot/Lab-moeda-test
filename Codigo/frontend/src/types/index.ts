@@ -26,11 +26,42 @@ export interface Vantagem {
   nome: string;
   descricao: string;
   custo: number;
-  quantidadeCupons: number | null;
-  cuponsResgatados: number;
-  dataValidade: string | null;
+  quantidadeCupons: number | null; // Controle de estoque total disponível
+  cuponsResgatados: number;        // Quantidade de itens já processados na fila
+  dataValidade: string | null;     // Data limite para resgatar o benefício
   empresaId: number;
   empresaNome: string;
+}
+
+export interface AlunoResumo {
+  id: number;
+  nome: string;
+  email: string;
+  curso: string;
+  saldoMoedas: number;
+}
+
+export interface Transacao {
+  id: number;
+  remetenteId: number;
+  remetenteNome: string;
+  destinatarioId: number;
+  destinatarioNome: string;
+  quantidade: number;
+  mensagem?: string;
+  criadoEm: string;
+}
+
+export interface Resgate {
+  id: number;
+  alunoId: number;
+  alunoNome: string;
+  vantagemId: number;
+  vantagemNome: string;
+  empresaNome: string;
+  custo: number;
+  status: 'PENDENTE' | 'CONFIRMADO' | 'CANCELADO';
+  criadoEm: string;
 }
 
 export interface Cupom {
@@ -39,7 +70,7 @@ export interface Cupom {
   vantagemNome: string;
   empresaNome: string;
   custoPago: number;
-  codigoCupom: string;
+  codigoCupom: string; // Token único criptografado/gerado para validação
   dataResgate: string;
   status: 'ATIVO' | 'USADO' | 'EXPIRADO';
 }

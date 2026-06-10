@@ -18,6 +18,9 @@ public class Professor extends Usuario {
     @Column(name = "saldo_moedas")
     private Integer saldoMoedas = 0;
 
+    @Column(length = 11, unique = true)
+    private String cpf;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "instituicao_id")
     private Instituicao instituicao;

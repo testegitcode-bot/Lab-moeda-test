@@ -27,7 +27,7 @@ public class Aluno extends Usuario {
     private Integer saldoMoedas = 0;
 
     // Isolado de listagens públicas e relatórios; usado exclusivamente para testes
-    @Column(name = "is_test_user", nullable = false)
+    @Column(name = "is_test_user")
     private Boolean isTestUser = false;
 
     @ManyToOne(fetch = FetchType.EAGER)

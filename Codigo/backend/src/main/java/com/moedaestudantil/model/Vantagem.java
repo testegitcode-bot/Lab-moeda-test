@@ -30,8 +30,8 @@ public class Vantagem {
     private Integer quantidadeCupons;
 
     // rastreia quantos cupons já foram resgatados
-    @Column(name = "cupons_resgatados", nullable = false)
-    private Integer cuponsResgatados = 0;
+    @Column(name = "cupons_resgatados", nullable = false, columnDefinition = "integer default 0")
+    private int cuponsResgatados = 0;
 
     // null = indeterminado; data futura = prazo de expiração
     @Column(name = "data_validade")

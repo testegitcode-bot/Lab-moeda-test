@@ -16,6 +16,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
 }
 
 export const api = {
+  // ── AUTENTICAÇÃO E CADASTRO
   login: (email: string, senha: string) =>
     request('/auth/login', {
       method: 'POST',
@@ -37,6 +38,7 @@ export const api = {
   listarInstituicoes: () =>
     request('/instituicoes'),
 
+  // ── VANTAGENS (CATÁLOGO)
   listarTodasVantagens: () =>
     request('/vantagens'),
 
@@ -58,6 +60,7 @@ export const api = {
   deletarVantagem: (id: number) =>
     request(`/vantagens/${id}`, { method: 'DELETE' }),
 
+  // ── PERFIL
   atualizarPerfilAluno: (id: number, payload: object) =>
     request(`/perfil/aluno/${id}`, {
       method: 'PUT',
@@ -70,12 +73,56 @@ export const api = {
       body: JSON.stringify(payload),
     }),
 
+  // ── TRANSAÇÕES (Envio de moedas do Professor)
+  /** Lista alunos da mesma instituição (para o select do professor) */
+  listarAlunosDaInstituicao: (instituicaoId: number) =>
+    request(`/transacoes/alunos/instituicao/${instituicaoId}`),
+
+  /** Professor envia moedas para um aluno */
+  enviarMoedas: (payload: {
+    professorId: number;
+    alunoId: number;
+    quantidade: number;
+    mensagem?: string;
+  }) =>
+    request('/transacoes/enviar', { 
+      method: 'POST', 
+      body: JSON.stringify(payload) 
+    }),
+
+  cadastrarProfessor: (payload: object) =>
+  request('/professores', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  }),
+
+  /** Extrato de envios efetuados pelo professor */
+  extratoDosProfessor: (professorId: number) =>
+    request(`/transacoes/professor/${professorId}`),
+
+  /** Extrato de recebimentos do aluno */
+  extratoDoAluno: (alunoId: number) =>
+    request(`/transacoes/aluno/${alunoId}`),
+
+  // ── RESGATES E CUPONS (Fluxo da Fila e Empresa)
+  /** Aluno solicita o resgate de uma vantagem — envia a requisição para a Fila (RabbitMQ) */
   solicitarResgate: (alunoId: number, vantagemId: number) =>
     request('/resgates/solicitar', {
       method: 'POST',
       body: JSON.stringify({ alunoId, vantagemId }),
     }),
 
+  /** Histórico de cupons/resgates gerados para o aluno */
   listarCuponsAluno: (alunoId: number) =>
     request(`/resgates/aluno/${alunoId}`),
+
+  /** Lista de resgates pendentes/confirmados para controle da empresa parceira */
+  resgatesDaEmpresa: (empresaId: number) =>
+    request(`/resgates/empresa/${empresaId}`),
+
+  /** Empresa confirma a entrega física/uso da vantagem através do código do cupom */
+  confirmarResgate: (resgateId: number) =>
+    request(`/resgates/${resgateId}/confirmar`, { 
+      method: 'PUT' 
+    }),
 };
