@@ -11,26 +11,9 @@
 
 ### Stack Tecnológica
 
-#### Backend
-![Java](https://img.shields.io/badge/Java-17-007ec6?style=for-the-badge&logo=openjdk&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.3.5-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
-![Maven](https://img.shields.io/badge/Maven-3.9.9-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
+### 📊 Status e Métricas do Projeto
 
-#### Frontend
-![React](https://img.shields.io/badge/React-19.1.1-61DAFB?style=for-the-badge&logo=react&logoColor=20232A)
-![Vite](https://img.shields.io/badge/Vite-7.1.2-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-
-#### Infraestrutura & Dados
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker_Compose-2.x-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-
-### Estatísticas do Repositório
-
-![Tamanho do Repositório](https://img.shields.io/github/repo-size/seu-usuario/nome-do-repositorio?style=for-the-badge&logo=files&color=007ec6)
-![Último Commit](https://img.shields.io/github/last-commit/seu-usuario/nome-do-repositorio?style=for-the-badge&logo=clockify&color=007ec6)
-![Licença](https://img.shields.io/github/license/seu-usuario/nome-do-repositorio?style=for-the-badge&color=007ec6&logo=opensourceinitiative)
+[![Versão](https://img.shields.io/badge/Versão-v1.0.0-blue?style=for-the-badge)](https://github.com/seu-usuario/nome-do-repositorio/releases) ![React](https://img.shields.io/badge/React-19.1.1-007ec6?style=for-the-badge&logo=react&logoColor=white) ![Vite](https://img.shields.io/badge/Vite-7.1.2-007ec6?style=for-the-badge&logo=vite&logoColor=white) ![Java](https://img.shields.io/badge/Java-17-007ec6?style=for-the-badge&logo=openjdk&logoColor=white) ![Maven](https://img.shields.io/badge/Maven-3.9.9-007ec6?style=for-the-badge&logo=apachemaven&logoColor=white) ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.3.5-007ec6?style=for-the-badge&logo=springboot&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-007ec6?style=for-the-badge&logo=tailwind-css&logoColor=white) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-007ec6?style=for-the-badge&logo=postgresql&logoColor=white) ![GitHub repo size](https://img.shields.io/github/repo-size/seu-usuario/nome-do-repositorio?style=for-the-badge&logo=files) ![GitHub directory file count](https://img.shields.io/github/directory-file-count/seu-usuario/nome-do-repositorio?style=for-the-badge&logo=files) ![GitHub stars](https://img.shields.io/github/stars/seu-usuario/nome-do-repositorio?style=for-the-badge&logo=github) ![GitHub forks](https://img.shields.io/github/forks/seu-usuario/nome-do-repositorio?style=for-the-badge&logo=git) ![GitHub language count](https://img.shields.io/github/languages/count/seu-usuario/nome-do-repositorio?style=for-the-badge&logo=python) ![GitHub license](https://img.shields.io/github/license/seu-usuario/nome-do-repositorio?style=for-the-badge&color=007ec6&logo=opensourceinitiative) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/seu-usuario/nome-do-repositorio?style=for-the-badge&color=007ec6&logo=gitkraken) ![GitHub last commit](https://img.shields.io/github/last-commit/seu-usuario/nome-do-repositorio?style=for-the-badge&logo=clockify)
 
 ---
 
