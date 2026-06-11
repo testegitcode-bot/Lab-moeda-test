@@ -8,7 +8,7 @@
 ![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
 ![Java](https://img.shields.io/badge/backend-Java%2017-blue)
 ![React](https://img.shields.io/badge/frontend-React-61DAFB)
-![License](https://img.shields.io/badge/license-MIT-green
+![License](https://img.shields.io/badge/license-MIT-green)
 
 ---
 
