@@ -12,34 +12,34 @@
 
 ## 📚 Índice
 
-- 🔗 Links Úteis  
-- 📝 Sobre o Projeto  
-- ✨ Funcionalidades Principais  
-- 🛠 Tecnologias Utilizadas  
-- 🏗 Arquitetura  
-- 📊 Exemplos de Diagramas  
-- 🔧 Instalação e Execução  
-- 🔑 Variáveis de Ambiente  
-- 📦 Instalação de Dependências  
-- 💾 Banco de Dados  
-- ⚡ Execução  
-- 🐳 Docker  
-- 🚀 Deploy  
-- 📂 Estrutura de Pastas  
-- 🎥 Demonstração  
-- 🧪 Testes  
-- 📚 Documentações  
-- 👥 Autores  
-- 🤝 Contribuição  
-- 🙏 Agradecimentos  
-- ⚖️ Licença  
+- [🔗 Links Úteis](#-links-úteis)
+- [📝 Sobre o Projeto](#-sobre-o-projeto)
+- [✨ Funcionalidades Principais](#-funcionalidades-principais)
+- [🛠 Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [🏗 Arquitetura](#-arquitetura)
+- [📊 Exemplos de Diagramas](#-exemplos-de-diagramas)
+- [🔧 Instalação e Execução](#-instalação-e-execução)
+- [🔑 Variáveis de Ambiente](#-variáveis-de-ambiente)
+- [📦 Instalação de Dependências](#-instalação-de-dependências)
+- [💾 Banco de Dados](#-banco-de-dados)
+- [⚡ Execução](#-execução)
+- [🐳 Docker](#-docker)
+- [🚀 Deploy](#-deploy)
+- [📂 Estrutura de Pastas](#-estrutura-de-pastas)
+- [🎥 Demonstração](#-demonstração)
+- [🧪 Testes](#-testes)
+- [📚 Documentações](#-documentações)
+- [👥 Autores](#-autores)
+- [🤝 Contribuição](#-contribuição)
+- [🙏 Agradecimentos](#-agradecimentos)
+- [⚖️ Licença](#-licença)
 
 ---
 
 ## 🔗 Links Úteis
 
 - 🌐 Demo Online: Acesse a Aplicação Web Autofix  
-- 📖 Documentação da API (Swagger)
+- 📖 Documentação da API: Swagger  
 
 ---
 
@@ -68,8 +68,8 @@ Projeto desenvolvido na **PUC Minas**.
 - 🔐 Autenticação com JWT  
 - 🗓️ Agendamento online  
 - 🛠️ Gestão de O.S. e orçamentos  
-- 📦 Controle de estoque automático  
-- 📊 Alertas de estoque  
+- 📦 Controle automático de estoque  
+- 📊 Alertas de estoque mínimo  
 
 ---
 
@@ -78,7 +78,7 @@ Projeto desenvolvido na **PUC Minas**.
 ### 💻 Front-end
 - React  
 - TypeScript  
-- Tailwind  
+- Tailwind CSS  
 - Vite  
 
 ### 🖥️ Back-end
@@ -90,29 +90,33 @@ Projeto desenvolvido na **PUC Minas**.
 
 ### ⚙️ Infraestrutura
 - Docker  
+- Docker Compose  
 - Vercel  
 
 ---
 
 ## 🏗 Arquitetura
 
-Padrão MVC:
+O sistema segue o padrão **MVC (Model-View-Controller)**:
 
-- Controller  
-- Service  
-- Repository  
+- Controller → recebe requisições  
+- Service → regras de negócio  
+- Repository → acesso ao banco  
 
-Herança com estratégia **JOINED**.
+### 🧬 Modelagem
+
+- Herança com estratégia **JOINED**  
+- Normalização de dados  
 
 ---
 
 ## 📊 Exemplos de Diagramas
 
-- Arquitetura  
-- C4  
-- Sequência / Comunicação  
-- DER  
-- Estados  
+- Diagrama de Arquitetura  
+- Modelo C4  
+- Diagramas de Sequência / Comunicação  
+- DER (Modelo de Dados)  
+- Diagrama de Estados  
 
 ---
 
@@ -121,7 +125,7 @@ Herança com estratégia **JOINED**.
 ### ✅ Pré-requisitos
 
 - Java 17+  
-- Node 18+  
+- Node.js 18+  
 - Docker  
 
 ---
@@ -130,7 +134,7 @@ Herança com estratégia **JOINED**.
 
 ### Back-end
 
-```
+```env
 SERVER_PORT=8080
 SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/autofix
 SPRING_DATASOURCE_USERNAME=postgres
@@ -139,13 +143,13 @@ SPRING_DATASOURCE_PASSWORD=senha-segura-123
 
 ### Front-end
 
-```
+```env
 VITE_API_URL=http://localhost:8080/api
 ```
 
 ---
 
-## 📦 Instalação
+## 📦 Instalação de Dependências
 
 ```bash
 git clone https://github.com/seu-usuario/autofix.git
@@ -180,23 +184,29 @@ docker run --name autofix_db \
 -p 5432:5432 -d postgres:16
 ```
 
+> ✅ As tabelas são criadas automaticamente via Hibernate (`ddl-auto: update`)
+
 ---
 
 ## ⚡ Execução
 
-### Back-end
+### Terminal 1 – Back-end
 
 ```bash
 cd backend
 ./mvnw spring-boot:run
 ```
 
-### Front-end
+➡️ http://localhost:8080
+
+### Terminal 2 – Front-end
 
 ```bash
 cd frontend
 npm run dev
 ```
+
+➡️ http://localhost:5173
 
 ---
 
@@ -218,7 +228,9 @@ docker-compose down
 
 ```bash
 cd frontend && npm run build
+cd ..
 cd backend && ./mvnw clean package
+cd ..
 ```
 
 ---
@@ -230,7 +242,14 @@ cd backend && ./mvnw clean package
 ├── docker-compose.yml
 ├── README.md
 ├── frontend
+│   ├── src
+│   └── public
 └── backend
+    ├── controller
+    ├── service
+    ├── repository
+    ├── model
+    └── dto
 ```
 
 ---
@@ -238,7 +257,7 @@ cd backend && ./mvnw clean package
 ## 🎥 Demonstração
 
 - Painel do Mecânico  
-- Controle de O.S.  
+- Controle de Ordens de Serviço  
 
 ---
 
@@ -248,6 +267,9 @@ cd backend && ./mvnw clean package
 cd backend
 ./mvnw test
 ```
+
+- Testes unitários (Mockito)  
+- Testes de integração (JPA)  
 
 ---
 
@@ -268,20 +290,21 @@ cd backend
 
 ## 🤝 Contribuição
 
-1. Fork  
-2. Branch  
-3. Commit  
-4. Push  
-5. Pull Request  
+1. Fork do projeto  
+2. Criar branch (`git checkout -b feature/nome`)  
+3. Commit (`git commit -m 'feat: nova funcionalidade'`)  
+4. Push (`git push origin feature/nome`)  
+5. Abrir Pull Request  
 
 ---
 
 ## 🙏 Agradecimentos
 
-Prof. Dr. João Paulo Aramuni  
+Ao Prof. Dr. João Paulo Aramuni pelo suporte acadêmico.
 
 ---
 
 ## ⚖️ Licença
 
 MIT
+``
