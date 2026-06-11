@@ -5,10 +5,32 @@
 
 ---
 
-![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
-![Java](https://img.shields.io/badge/backend-Java%2017-blue)
-![React](https://img.shields.io/badge/frontend-React-61DAFB)
-![License](https://img.shields.io/badge/license-MIT-green)
+![PUC Minas](https://img.shields.io/badge/PUC_Minas-Engenharia_de_Software-red?style=for-the-badge&logo=bookstack&logoColor=white)
+![Disciplina](https://img.shields.io/badge/Disciplina-Projeto_de_Software-orange?style=for-the-badge&logo=githubactions&logoColor=white)
+![Versão](https://img.shields.io/badge/Vers%C3%A3o-v1.0.0-blue?style=for-the-badge)
+
+### Stack Tecnológica
+
+#### Backend
+![Java](https://img.shields.io/badge/Java-17-007ec6?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.3.5-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-3.9.9-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
+
+#### Frontend
+![React](https://img.shields.io/badge/React-19.1.1-61DAFB?style=for-the-badge&logo=react&logoColor=20232A)
+![Vite](https://img.shields.io/badge/Vite-7.1.2-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+
+#### Infraestrutura & Dados
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker_Compose-2.x-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+
+### Estatísticas do Repositório
+
+![Tamanho do Repositório](https://img.shields.io/github/repo-size/seu-usuario/nome-do-repositorio?style=for-the-badge&logo=files&color=007ec6)
+![Último Commit](https://img.shields.io/github/last-commit/seu-usuario/nome-do-repositorio?style=for-the-badge&logo=clockify&color=007ec6)
+![Licença](https://img.shields.io/github/license/seu-usuario/nome-do-repositorio?style=for-the-badge&color=007ec6&logo=opensourceinitiative)
 
 ---
 
