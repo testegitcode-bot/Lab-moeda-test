@@ -3,6 +3,7 @@ package com.moedaestudantil.repository;
 import com.moedaestudantil.model.Resgate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,4 +13,7 @@ public interface ResgateRepository extends JpaRepository<Resgate, Long> {
     List<Resgate> findByVantagemEmpresaIdOrderByDataResgateDesc(Long empresaId);
     long countByVantagemId(Long vantagemId);
     boolean existsByAlunoIdAndVantagemId(Long alunoId, Long vantagemId);
+
+    @Transactional
+    void deleteByVantagemId(Long vantagemId);
 }

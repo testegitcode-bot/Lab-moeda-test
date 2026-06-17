@@ -120,7 +120,9 @@ export function DashboardEmpresaPage() {
     try {
       await api.deletarVantagem(id);
       carregar();
-    } catch {}
+    } catch (err: unknown) {
+      setErro(err instanceof Error ? err.message : 'Erro ao remover vantagem.');
+    }
   };
 
   const disponivel = (v: Vantagem) =>
@@ -142,6 +144,13 @@ export function DashboardEmpresaPage() {
             Nova Vantagem
           </button>
         </div>
+
+        {erro && !showModal && (
+          <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm flex items-center justify-between">
+            <span>{erro}</span>
+            <button onClick={() => setErro('')} className="ml-4 text-red-500 hover:text-red-700 font-bold">×</button>
+          </div>
+        )}
 
         {usuario.descricao && (
           <div className="card mb-6 bg-emerald-50 border-emerald-100">

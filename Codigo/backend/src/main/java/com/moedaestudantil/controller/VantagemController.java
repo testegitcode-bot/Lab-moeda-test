@@ -5,6 +5,7 @@ import com.moedaestudantil.dto.VantagemResponse;
 import com.moedaestudantil.model.EmpresaParceira;
 import com.moedaestudantil.model.Vantagem;
 import com.moedaestudantil.repository.EmpresaParceiraRepository;
+import com.moedaestudantil.repository.ResgateRepository;
 import com.moedaestudantil.repository.VantagemRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +20,14 @@ public class VantagemController {
 
     private final VantagemRepository vantagemRepository;
     private final EmpresaParceiraRepository empresaRepository;
+    private final ResgateRepository resgateRepository;
 
     public VantagemController(VantagemRepository vantagemRepository,
-                               EmpresaParceiraRepository empresaRepository) {
+                               EmpresaParceiraRepository empresaRepository,
+                               ResgateRepository resgateRepository) {
         this.vantagemRepository = vantagemRepository;
         this.empresaRepository = empresaRepository;
+        this.resgateRepository = resgateRepository;
     }
 
     // Lista todas as vantagens ativas (para o catálogo do aluno)
@@ -90,6 +94,8 @@ public class VantagemController {
         if (!vantagemRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+        // Remove resgates vinculados antes de deletar a vantagem (evita FK constraint violation)
+        resgateRepository.deleteByVantagemId(id);
         vantagemRepository.deleteById(id);
         return ResponseEntity.ok(Map.of("mensagem", "Vantagem removida com sucesso."));
     }
