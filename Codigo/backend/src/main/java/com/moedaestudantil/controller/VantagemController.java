@@ -52,6 +52,12 @@ public class VantagemController {
         v.setCusto(request.getCusto());
         v.setQuantidadeCupons(request.getQuantidadeCupons());
         v.setDataValidade(request.getDataValidade());
+        // Vantagens com prazo sempre são de resgate único
+        if (request.getDataValidade() != null) {
+            v.setResgateUnico(true);
+        } else {
+            v.setResgateUnico(request.getIsResgateUnico() == null || request.getIsResgateUnico());
+        }
         v.setEmpresa(empresaOpt.get());
 
         return ResponseEntity.ok(VantagemResponse.from(vantagemRepository.save(v)));
@@ -70,6 +76,11 @@ public class VantagemController {
         v.setCusto(request.getCusto());
         v.setQuantidadeCupons(request.getQuantidadeCupons());
         v.setDataValidade(request.getDataValidade());
+        if (request.getDataValidade() != null) {
+            v.setResgateUnico(true);
+        } else {
+            v.setResgateUnico(request.getIsResgateUnico() == null || request.getIsResgateUnico());
+        }
 
         return ResponseEntity.ok(VantagemResponse.from(vantagemRepository.save(v)));
     }

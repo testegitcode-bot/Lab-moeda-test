@@ -13,4 +13,6 @@ public class VantagemRequest {
     private Integer quantidadeCupons;
     // null = indeterminado
     private LocalDate dataValidade;
+    // true = resgate único por aluno; false = múltiplos resgates
+    private Boolean isResgateUnico;
 }

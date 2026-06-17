@@ -1,9 +1,74 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { QRCodeSVG } from 'qrcode.react';
 import { Header } from '../components/Header';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
 import type { Vantagem, Resgate, Transacao } from '../types';
+
+type CupomAba = 'codigo' | 'qrcode';
+
+function CupomHistoricoCard({ r, statusConfig }: {
+  r: Resgate;
+  statusConfig: Record<string, { label: string; cls: string }>;
+}) {
+  const [aba, setAba] = useState<CupomAba>('codigo');
+  const cfg = statusConfig[r.status] ?? { label: r.status, cls: 'bg-gray-100 text-gray-600' };
+
+  return (
+    <div className="p-3 bg-gray-50 rounded-lg border border-gray-100">
+      <div className="flex items-start gap-3">
+        <div className="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
+          <svg className="w-4 h-4 text-primary-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+              d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2 mb-2">
+            <div>
+              <p className="text-sm font-medium text-gray-900">{r.vantagemNome}</p>
+              <p className="text-xs text-gray-500">{r.empresaNome}</p>
+            </div>
+            <div className="flex flex-col items-end gap-1 flex-shrink-0">
+              <span className="text-sm font-bold text-red-600">-{r.custoPago}</span>
+              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${cfg.cls}`}>{cfg.label}</span>
+            </div>
+          </div>
+
+          {/* Tabs do cupom */}
+          <div className="flex gap-1 bg-white border border-gray-200 rounded-lg p-0.5 w-fit mb-2">
+            <button
+              onClick={() => setAba('codigo')}
+              className={`text-xs px-3 py-1 rounded-md font-medium transition-all ${aba === 'codigo' ? 'bg-primary-700 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+            >
+              Código
+            </button>
+            <button
+              onClick={() => setAba('qrcode')}
+              className={`text-xs px-3 py-1 rounded-md font-medium transition-all ${aba === 'qrcode' ? 'bg-primary-700 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+            >
+              QR Code
+            </button>
+          </div>
+
+          {aba === 'codigo' ? (
+            <p className="text-xs text-gray-400 font-mono">#{r.codigoCupom}</p>
+          ) : (
+            <div className="bg-white border border-gray-100 rounded-lg p-2 inline-flex flex-col items-center gap-1">
+              <QRCodeSVG value={String(r.id)} size={80} level="M" includeMargin={false} />
+              <p className="text-xs text-gray-400">Escaneie para resgatar</p>
+            </div>
+          )}
+
+          <p className="text-xs text-gray-400 mt-1">
+            {new Date(r.dataResgate).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function LojaDasVantagensPage() {
   const { usuario, login } = useAuth();
@@ -14,7 +79,6 @@ export function LojaDasVantagensPage() {
   const [extrato, setExtrato] = useState<Transacao[]>([]);
   const [loadingDados, setLoadingDados] = useState(true);
   const [resgatando, setResgatando] = useState<number | null>(null);
-  const [vantagensResgatadas, setVantagensResgatadas] = useState<Set<number>>(new Set());
   const [toast, setToast] = useState('');
   const [erro, setErro] = useState('');
   const [aba, setAba] = useState<'loja' | 'extrato' | 'historico'>('loja');
@@ -25,7 +89,6 @@ export function LojaDasVantagensPage() {
   const carregarResgates = () =>
     (api.resgatesDoAluno(alunoId) as Promise<Resgate[]>).then(lista => {
       setResgates(lista);
-      setVantagensResgatadas(new Set(lista.map(r => r.vantagemId)));
     }).catch(() => {});
 
   useEffect(() => {
@@ -42,12 +105,14 @@ export function LojaDasVantagensPage() {
       .then(([v, r, e]) => {
         setVantagens(v);
         setResgates(r);
-        setVantagensResgatadas(new Set(r.map(res => res.vantagemId)));
         setExtrato(e);
       })
       .catch(() => setErro('Erro ao carregar dados.'))
       .finally(() => setLoadingDados(false));
   }, []);
+
+  const jaResgatouVantagem = (vantagemId: number) =>
+    resgates.some(r => r.vantagemId === vantagemId);
 
   const handleResgatar = async (vantagem: Vantagem) => {
     setToast('');
@@ -61,23 +126,40 @@ export function LojaDasVantagensPage() {
     try {
       await api.resgatar(alunoId, vantagem.id);
 
-      // Atualiza o saldo local otimisticamente
       if (usuario) login({ ...usuario, saldoMoedas: saldo - vantagem.custo });
 
-      // Bloqueia o botão imediatamente no estado local (antes do consumer processar)
-      setVantagensResgatadas(prev => new Set(prev).add(vantagem.id));
-
-      // Exibe toast de processamento assíncrono
       setToast(`Seu resgate de "${vantagem.nome}" está sendo processado!`);
       setTimeout(() => setToast(''), 5000);
 
-      // Recarrega os cupons após curto intervalo (consumer é quase instantâneo)
       setTimeout(() => carregarResgates(), 800);
     } catch (err: unknown) {
       setErro(err instanceof Error ? err.message : 'Erro ao resgatar.');
     } finally {
       setResgatando(null);
     }
+  };
+
+  const podeResgatar = (v: Vantagem) => {
+    if (saldo < v.custo) return false;
+    if (v.dataValidade && new Date(v.dataValidade) < new Date()) return false;
+    if (v.quantidadeCupons != null && (v.quantidadeCupons - v.cuponsResgatados) <= 0) return false;
+    return true;
+  };
+
+  const labelBotao = (v: Vantagem) => {
+    if (resgatando === v.id) return 'Processando...';
+    const jaResgatou = jaResgatouVantagem(v.id);
+    if (v.isResgateUnico && jaResgatou) return 'Cupom já resgatado';
+    if (!podeResgatar(v)) return 'Saldo insuficiente';
+    if (!v.isResgateUnico && jaResgatou) return 'Resgatar novamente';
+    return 'Resgatar Vantagem';
+  };
+
+  const isDisabled = (v: Vantagem) => {
+    if (resgatando === v.id) return true;
+    if (v.isResgateUnico && jaResgatouVantagem(v.id)) return true;
+    if (!podeResgatar(v)) return true;
+    return false;
   };
 
   const formatData = (iso: string) =>
@@ -93,7 +175,6 @@ export function LojaDasVantagensPage() {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Header />
 
-      {/* Toast de processamento */}
       {toast && (
         <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 bg-green-700 text-white px-5 py-3 rounded-xl shadow-lg text-sm font-medium animate-fade-in">
           <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -104,7 +185,6 @@ export function LojaDasVantagensPage() {
       )}
 
       <main className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
-        {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
           <button onClick={() => navigate('/dashboard/aluno')} className="hover:text-primary-700 transition-colors">
             Painel do Aluno
@@ -115,7 +195,6 @@ export function LojaDasVantagensPage() {
           <span className="text-gray-900 font-medium">Loja de Vantagens</span>
         </div>
 
-        {/* Saldo card */}
         <div className="card mb-6 bg-gradient-to-br from-blue-700 to-blue-900 text-white border-0">
           <div className="flex items-center justify-between">
             <div>
@@ -132,14 +211,12 @@ export function LojaDasVantagensPage() {
           </div>
         </div>
 
-        {/* Erro */}
         {erro && (
           <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
             {erro}
           </div>
         )}
 
-        {/* Abas */}
         <div className="flex gap-1 bg-white border border-gray-200 rounded-xl p-1 mb-6 w-fit">
           {[
             { key: 'loja', label: 'Loja' },
@@ -172,13 +249,13 @@ export function LojaDasVantagensPage() {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {vantagens.map(v => {
-                  const jaResgatou = vantagensResgatadas.has(v.id);
-                  const podeResgatar = !jaResgatou && saldo >= v.custo;
+                  const jaResgatou = jaResgatouVantagem(v.id);
+                  const disabled = isDisabled(v);
                   return (
                     <div
                       key={v.id}
                       className={`card flex flex-col gap-3 transition-all duration-200 ${
-                        podeResgatar ? 'hover:shadow-md' : 'opacity-70'
+                        !disabled ? 'hover:shadow-md' : 'opacity-70'
                       }`}
                     >
                       {(v as Vantagem & { fotoUrl?: string }).fotoUrl ? (
@@ -203,6 +280,9 @@ export function LojaDasVantagensPage() {
                         {v.descricao && (
                           <p className="text-sm text-gray-600 mt-2 line-clamp-2">{v.descricao}</p>
                         )}
+                        {!v.isResgateUnico && (
+                          <span className="inline-block mt-1 text-xs px-2 py-0.5 bg-teal-100 text-teal-700 rounded-full">Múltiplos resgates</span>
+                        )}
                       </div>
 
                       <div className="flex items-center justify-between pt-2 border-t border-gray-100">
@@ -212,22 +292,16 @@ export function LojaDasVantagensPage() {
                         </div>
                         <button
                           onClick={() => handleResgatar(v)}
-                          disabled={!podeResgatar || resgatando === v.id || jaResgatou}
+                          disabled={disabled}
                           className={`text-sm font-medium px-4 py-1.5 rounded-lg transition-all duration-200 ${
-                            jaResgatou
+                            v.isResgateUnico && jaResgatou
                               ? 'bg-gray-400 text-white cursor-not-allowed'
-                              : podeResgatar
-                              ? 'bg-primary-700 hover:bg-primary-800 text-white'
-                              : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                              : disabled
+                              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                              : 'bg-primary-700 hover:bg-primary-800 text-white'
                           }`}
                         >
-                          {resgatando === v.id
-                            ? 'Processando...'
-                            : jaResgatou
-                            ? 'Essa vantagem já foi resgatada'
-                            : podeResgatar
-                            ? 'Resgatar Vantagem'
-                            : 'Saldo insuficiente'}
+                          {labelBotao(v)}
                         </button>
                       </div>
                     </div>
@@ -298,33 +372,9 @@ export function LojaDasVantagensPage() {
               </div>
             ) : (
               <div className="space-y-3">
-                {resgates.map(r => {
-                  const cfg = statusConfig[r.status] ?? { label: r.status, cls: 'bg-gray-100 text-gray-600' };
-                  return (
-                    <div key={r.id} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100">
-                      <div className="w-9 h-9 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <svg className="w-4 h-4 text-primary-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                        </svg>
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-start justify-between gap-2">
-                          <div>
-                            <p className="text-sm font-medium text-gray-900">{r.vantagemNome}</p>
-                            <p className="text-xs text-gray-500">{r.empresaNome}</p>
-                            <p className="text-xs text-gray-400 font-mono mt-0.5">#{r.codigoCupom}</p>
-                          </div>
-                          <div className="flex flex-col items-end gap-1">
-                            <span className="text-sm font-bold text-red-600">-{r.custoPago}</span>
-                            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${cfg.cls}`}>{cfg.label}</span>
-                          </div>
-                        </div>
-                        <p className="text-xs text-gray-400 mt-1">{formatData(r.dataResgate)}</p>
-                      </div>
-                    </div>
-                  );
-                })}
+                {resgates.map(r => (
+                  <CupomHistoricoCard key={r.id} r={r} statusConfig={statusConfig} />
+                ))}
               </div>
             )}
           </div>

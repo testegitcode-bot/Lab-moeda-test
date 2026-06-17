@@ -37,6 +37,10 @@ public class Vantagem {
     @Column(name = "data_validade")
     private LocalDate dataValidade;
 
+    // true = resgate único por aluno (padrão quando há dataValidade); false = múltiplos resgates permitidos
+    @Column(name = "is_resgate_unico", nullable = false, columnDefinition = "boolean default true")
+    private boolean resgateUnico = true;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "empresa_id", nullable = false)
     private EmpresaParceira empresa;

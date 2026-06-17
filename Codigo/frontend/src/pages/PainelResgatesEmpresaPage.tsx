@@ -12,7 +12,7 @@ export function PainelResgatesEmpresaPage() {
   const [resgates, setResgates] = useState<ResgateEmpresa[]>([]);
   const [loading, setLoading] = useState(true);
   const [confirmando, setConfirmando] = useState<number | null>(null);
-  const [filtro, setFiltro] = useState<'TODOS' | 'PENDENTE' | 'CONFIRMADO'>('TODOS');
+  const [filtro, setFiltro] = useState<'TODOS' | 'ATIVO' | 'USADO'>('TODOS');
 
   const empresaId = usuario?.id ?? 0;
 
@@ -44,17 +44,17 @@ export function PainelResgatesEmpresaPage() {
     new Date(iso).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
 
   const statusConfig = {
-    PENDENTE: { label: 'Aguardando', cls: 'bg-yellow-100 text-yellow-800' },
-    CONFIRMADO: { label: 'Confirmado', cls: 'bg-green-100 text-green-800' },
-    CANCELADO: { label: 'Cancelado', cls: 'bg-red-100 text-red-800' },
+    ATIVO: { label: 'Aguardando uso', cls: 'bg-yellow-100 text-yellow-800' },
+    USADO: { label: 'Utilizado', cls: 'bg-green-100 text-green-800' },
+    EXPIRADO: { label: 'Expirado', cls: 'bg-red-100 text-red-800' },
   };
 
   const filtrados = resgates.filter(r =>
     filtro === 'TODOS' ? true : r.status === filtro
   );
 
-  const pendentes = resgates.filter(r => r.status === 'PENDENTE').length;
-  const confirmados = resgates.filter(r => r.status === 'CONFIRMADO').length;
+  const ativos = resgates.filter(r => r.status === 'ATIVO').length;
+  const usados = resgates.filter(r => r.status === 'USADO').length;
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -76,8 +76,8 @@ export function PainelResgatesEmpresaPage() {
         <div className="grid grid-cols-3 gap-4 mb-6">
           {[
             { label: 'Total', valor: resgates.length, cor: 'text-gray-900', bg: 'bg-white' },
-            { label: 'Aguardando', valor: pendentes, cor: 'text-yellow-700', bg: 'bg-yellow-50' },
-            { label: 'Confirmados', valor: confirmados, cor: 'text-green-700', bg: 'bg-green-50' },
+            { label: 'Aguardando uso', valor: ativos, cor: 'text-yellow-700', bg: 'bg-yellow-50' },
+            { label: 'Utilizados', valor: usados, cor: 'text-green-700', bg: 'bg-green-50' },
           ].map(s => (
             <div key={s.label} className={`${s.bg} rounded-xl border border-gray-100 p-4 text-center shadow-sm`}>
               <p className={`text-3xl font-bold ${s.cor}`}>{s.valor}</p>
@@ -88,7 +88,7 @@ export function PainelResgatesEmpresaPage() {
 
         {/* Filtros */}
         <div className="flex gap-2 mb-4">
-          {(['TODOS', 'PENDENTE', 'CONFIRMADO'] as const).map(f => (
+          {(['TODOS', 'ATIVO', 'USADO'] as const).map(f => (
             <button
               key={f}
               onClick={() => setFiltro(f)}
@@ -98,10 +98,10 @@ export function PainelResgatesEmpresaPage() {
                   : 'bg-white border border-gray-200 text-gray-600 hover:border-gray-300'
               }`}
             >
-              {f === 'TODOS' ? 'Todos' : f === 'PENDENTE' ? 'Aguardando' : 'Confirmados'}
-              {f === 'PENDENTE' && pendentes > 0 && (
+              {f === 'TODOS' ? 'Todos' : f === 'ATIVO' ? 'Aguardando uso' : 'Utilizados'}
+              {f === 'ATIVO' && ativos > 0 && (
                 <span className="ml-1.5 bg-yellow-500 text-white text-xs rounded-full px-1.5 py-0.5">
-                  {pendentes}
+                  {ativos}
                 </span>
               )}
             </button>
@@ -125,11 +125,11 @@ export function PainelResgatesEmpresaPage() {
           ) : (
             <div className="space-y-3">
               {filtrados.map(r => {
-                const cfg = statusConfig[r.status] ?? statusConfig.PENDENTE;
+                const cfg = statusConfig[r.status] ?? statusConfig.ATIVO;
                 return (
                   <div
                     key={r.id}
-                    className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100"
+                    className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100"
                   >
                     <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
                       <svg className="w-5 h-5 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -145,22 +145,23 @@ export function PainelResgatesEmpresaPage() {
                           <p className="text-xs text-gray-600 mt-0.5">
                             Aluno: <span className="font-medium">{r.alunoNome}</span>
                           </p>
+                          <p className="text-xs text-gray-400 font-mono mt-0.5">#{r.codigoCupom}</p>
                         </div>
                         <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                          <span className="text-sm font-bold text-primary-700">{r.custo} 🪙</span>
+                          <span className="text-sm font-bold text-primary-700">{r.custoPago} moedas</span>
                           <span className={`badge text-xs ${cfg.cls}`}>{cfg.label}</span>
                         </div>
                       </div>
-                      <p className="text-xs text-gray-400 mt-1">{formatData(r.criadoEm)}</p>
+                      <p className="text-xs text-gray-400 mt-1">{formatData(r.dataResgate)}</p>
                     </div>
 
-                    {r.status === 'PENDENTE' && (
+                    {r.status === 'ATIVO' && (
                       <button
                         onClick={() => handleConfirmar(r.id)}
                         disabled={confirmando === r.id}
                         className="btn-primary text-xs px-3 py-1.5 flex-shrink-0"
                       >
-                        {confirmando === r.id ? '...' : 'Confirmar entrega'}
+                        {confirmando === r.id ? '...' : 'Confirmar uso'}
                       </button>
                     )}
                   </div>

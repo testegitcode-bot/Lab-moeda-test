@@ -12,12 +12,14 @@ interface VantagemFormData {
   quantidadeCupons: string;
   prazTipo: 'indeterminado' | 'prazo';
   dataValidade: string;
+  isResgateUnico: boolean;
 }
 
 const emptyForm: VantagemFormData = {
   nome: '', descricao: '', custo: '',
   quantidadeTipo: 'ilimitado', quantidadeCupons: '',
   prazTipo: 'indeterminado', dataValidade: '',
+  isResgateUnico: true,
 };
 
 function MetricCard({ label, value, color }: { label: string; value: string | number; color: string }) {
@@ -75,6 +77,7 @@ export function DashboardEmpresaPage() {
       quantidadeCupons: v.quantidadeCupons != null ? String(v.quantidadeCupons) : '',
       prazTipo: v.dataValidade == null ? 'indeterminado' : 'prazo',
       dataValidade: v.dataValidade ?? '',
+      isResgateUnico: v.isResgateUnico,
     });
     setErro('');
     setShowModal(true);
@@ -90,6 +93,7 @@ export function DashboardEmpresaPage() {
     dataValidade: form.prazTipo === 'prazo' && form.dataValidade
       ? form.dataValidade
       : null,
+    isResgateUnico: form.prazTipo === 'prazo' ? true : form.isResgateUnico,
   });
 
   const handleSalvar = async (e: React.FormEvent) => {
@@ -193,6 +197,9 @@ export function DashboardEmpresaPage() {
                         ? <span className="badge bg-orange-100 text-orange-700">Válido até {new Date(v.dataValidade).toLocaleDateString('pt-BR')}</span>
                         : <span className="badge bg-gray-100 text-gray-500">Sem prazo</span>
                       }
+                      <span className={`badge ${v.isResgateUnico ? 'bg-amber-100 text-amber-700' : 'bg-teal-100 text-teal-700'}`}>
+                        {v.isResgateUnico ? 'Resgate único' : 'Múltiplos resgates'}
+                      </span>
                     </div>
                     <div className="flex gap-2 pt-3 border-t border-gray-100">
                       <button onClick={() => abrirEditar(v)} className="btn-secondary flex-1 text-sm py-2">Editar</button>
@@ -257,6 +264,43 @@ export function DashboardEmpresaPage() {
                 {form.prazTipo === 'prazo' && (
                   <input name="dataValidade" type="date" className="form-input" min={new Date().toISOString().split('T')[0]} value={form.dataValidade} onChange={handleChange} required />
                 )}
+              </div>
+
+              <div>
+                <label className="form-label">Tipo de Resgate</label>
+                {form.prazTipo === 'prazo' ? (
+                  <p className="text-sm text-gray-500 bg-gray-50 rounded-lg px-3 py-2 border border-gray-100">
+                    Resgate único obrigatório para vantagens com prazo definido.
+                  </p>
+                ) : (
+                  <div className="flex gap-4">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="isResgateUnico"
+                        value="true"
+                        checked={form.isResgateUnico === true}
+                        onChange={() => setForm(prev => ({ ...prev, isResgateUnico: true }))}
+                      />
+                      <span className="text-sm text-gray-700">Resgate Único</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="isResgateUnico"
+                        value="false"
+                        checked={form.isResgateUnico === false}
+                        onChange={() => setForm(prev => ({ ...prev, isResgateUnico: false }))}
+                      />
+                      <span className="text-sm text-gray-700">Múltiplos Resgates</span>
+                    </label>
+                  </div>
+                )}
+                <p className="text-xs text-gray-400 mt-1">
+                  {form.isResgateUnico
+                    ? 'Cada aluno poderá resgatar esta vantagem apenas uma vez.'
+                    : 'Alunos poderão resgatar múltiplas vezes, cada resgate gera um novo cupom.'}
+                </p>
               </div>
 
               {erro && (

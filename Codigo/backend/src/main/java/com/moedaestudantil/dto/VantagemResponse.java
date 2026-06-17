@@ -1,5 +1,6 @@
 package com.moedaestudantil.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.moedaestudantil.model.Vantagem;
 import lombok.Data;
 
@@ -14,6 +15,8 @@ public class VantagemResponse {
     private Integer quantidadeCupons;
     private Integer cuponsResgatados;
     private LocalDate dataValidade;
+    @JsonProperty("isResgateUnico")
+    private boolean resgateUnico;
     private Long empresaId;
     private String empresaNome;
 
@@ -26,6 +29,7 @@ public class VantagemResponse {
         dto.setQuantidadeCupons(v.getQuantidadeCupons());
         dto.setCuponsResgatados(v.getCuponsResgatados());
         dto.setDataValidade(v.getDataValidade());
+        dto.setResgateUnico(v.isResgateUnico());
         dto.setEmpresaId(v.getEmpresa().getId());
         dto.setEmpresaNome(v.getEmpresa().getNome());
         return dto;

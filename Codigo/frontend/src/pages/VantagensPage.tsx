@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 import { Header } from '../components/Header';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
 import type { Vantagem, Cupom } from '../types';
 
 type Aba = 'catalogo' | 'meus-cupons';
+type CupomAba = 'codigo' | 'qrcode';
 
 function DisponibilidadeBadge({ v }: { v: Vantagem }) {
   if (v.quantidadeCupons == null) {
@@ -35,6 +37,60 @@ function StatusBadge({ status }: { status: Cupom['status'] }) {
   return <span className={`badge ${map[status]}`}>{label[status]}</span>;
 }
 
+function CupomCard({ c }: { c: Cupom }) {
+  const [aba, setAba] = useState<CupomAba>('codigo');
+
+  return (
+    <div className="card shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 mb-1">
+          <h3 className="font-semibold text-gray-900 truncate">{c.vantagemNome}</h3>
+          <StatusBadge status={c.status} />
+        </div>
+        <p className="text-gray-500 text-sm">{c.empresaNome} · {c.custoPago} moedas</p>
+        <p className="text-gray-400 text-xs mt-1">
+          Resgatado em {new Date(c.dataResgate).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
+        </p>
+      </div>
+
+      <div className="shrink-0 w-full sm:w-auto">
+        {/* Tabs do cupom */}
+        <div className="flex gap-1 bg-gray-100 p-0.5 rounded-lg mb-2">
+          <button
+            onClick={() => setAba('codigo')}
+            className={`flex-1 text-xs px-3 py-1 rounded-md font-medium transition-all ${aba === 'codigo' ? 'bg-white shadow text-gray-900' : 'text-gray-500'}`}
+          >
+            Código
+          </button>
+          <button
+            onClick={() => setAba('qrcode')}
+            className={`flex-1 text-xs px-3 py-1 rounded-md font-medium transition-all ${aba === 'qrcode' ? 'bg-white shadow text-gray-900' : 'text-gray-500'}`}
+          >
+            QR Code
+          </button>
+        </div>
+
+        {aba === 'codigo' ? (
+          <div className="bg-gray-50 border border-dashed border-gray-300 rounded-lg px-4 py-3 text-center">
+            <p className="text-xs text-gray-400 mb-0.5">Código do Cupom</p>
+            <p className="font-mono font-bold text-gray-800 tracking-widest text-sm">{c.codigoCupom}</p>
+          </div>
+        ) : (
+          <div className="bg-white border border-gray-200 rounded-lg p-3 flex flex-col items-center gap-1">
+            <QRCodeSVG
+              value={String(c.id)}
+              size={96}
+              level="M"
+              includeMargin={false}
+            />
+            <p className="text-xs text-gray-400">Escaneie para resgatar</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function VantagensPage() {
   const { usuario } = useAuth();
   const [aba, setAba] = useState<Aba>('catalogo');
@@ -49,20 +105,28 @@ export function VantagensPage() {
 
   const saldo = usuario.saldoMoedas ?? 0;
 
+  const carregarCupons = () => {
+    setLoadingCupons(true);
+    api.listarCuponsAluno(usuario.id)
+      .then(data => setCupons(data as Cupom[]))
+      .catch(() => {})
+      .finally(() => setLoadingCupons(false));
+  };
+
   useEffect(() => {
     api.listarTodasVantagens()
       .then(data => setVantagens(data as Vantagem[]))
       .catch(() => {})
       .finally(() => setLoadingVantagens(false));
+    // Pre-load coupons so button states are accurate from the start
+    api.listarCuponsAluno(usuario.id)
+      .then(data => setCupons(data as Cupom[]))
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
     if (aba === 'meus-cupons') {
-      setLoadingCupons(true);
-      api.listarCuponsAluno(usuario.id)
-        .then(data => setCupons(data as Cupom[]))
-        .catch(() => {})
-        .finally(() => setLoadingCupons(false));
+      carregarCupons();
     }
   }, [aba]);
 
@@ -72,6 +136,10 @@ export function VantagensPage() {
     try {
       await api.solicitarResgate(usuario.id, v.id);
       setMensagem({ tipo: 'sucesso', texto: `Resgate de "${v.nome}" enfileirado! Seu cupom estará disponível em instantes.` });
+      // Recarrega lista de vantagens para atualizar cuponsResgatados
+      api.listarTodasVantagens().then(data => setVantagens(data as Vantagem[])).catch(() => {});
+      // Recarrega cupons após curto intervalo (consumer é quase instantâneo)
+      setTimeout(() => carregarCupons(), 800);
     } catch (err: unknown) {
       setMensagem({ tipo: 'erro', texto: err instanceof Error ? err.message : 'Erro ao solicitar resgate.' });
     } finally {
@@ -79,10 +147,14 @@ export function VantagensPage() {
     }
   };
 
+  const jaResgatouVantagem = (vantagemId: number) =>
+    cupons.some(c => c.vantagemId === vantagemId);
+
   const podeResgatar = (v: Vantagem) => {
     if (saldo < v.custo) return false;
     if (v.dataValidade && new Date(v.dataValidade) < new Date()) return false;
     if (v.quantidadeCupons != null && (v.quantidadeCupons - v.cuponsResgatados) <= 0) return false;
+    if (v.isResgateUnico && jaResgatouVantagem(v.id)) return false;
     return true;
   };
 
@@ -90,7 +162,17 @@ export function VantagensPage() {
     if (v.dataValidade && new Date(v.dataValidade) < new Date()) return 'Vantagem expirada';
     if (v.quantidadeCupons != null && (v.quantidadeCupons - v.cuponsResgatados) <= 0) return 'Cupons esgotados';
     if (saldo < v.custo) return `Saldo insuficiente (${saldo} moedas)`;
+    if (v.isResgateUnico && jaResgatouVantagem(v.id)) return 'Cupom já resgatado';
     return null;
+  };
+
+  const labelBotao = (v: Vantagem, emAndamento: boolean): string => {
+    if (emAndamento) return 'Solicitando...';
+    if (v.isResgateUnico && jaResgatouVantagem(v.id)) return 'Cupom já resgatado';
+    const bloqueio = motivoBloqueio(v);
+    if (bloqueio) return bloqueio;
+    if (!v.isResgateUnico && jaResgatouVantagem(v.id)) return 'Resgatar novamente';
+    return 'Resgatar';
   };
 
   return (
@@ -150,9 +232,11 @@ export function VantagensPage() {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {vantagens.map(v => {
-                  const bloqueio = motivoBloqueio(v);
+                  const jaResgatou = jaResgatouVantagem(v.id);
                   const pode = podeResgatar(v);
                   const emAndamento = resgateEmAndamento === v.id;
+                  const bloqueio = motivoBloqueio(v);
+                  const isDisabled = (!pode && !(v.isResgateUnico === false && jaResgatou)) || emAndamento || (v.isResgateUnico && jaResgatou);
                   return (
                     <div key={v.id} className="card shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col">
                       <div className="flex items-center justify-between gap-2 mb-1">
@@ -166,18 +250,21 @@ export function VantagensPage() {
                       <div className="flex flex-wrap gap-2 mb-4">
                         <DisponibilidadeBadge v={v} />
                         <ValidadeBadge v={v} />
+                        {!v.isResgateUnico && (
+                          <span className="badge bg-teal-100 text-teal-700">Múltiplos resgates</span>
+                        )}
                       </div>
                       <button
                         onClick={() => handleResgatar(v)}
-                        disabled={!pode || emAndamento}
+                        disabled={isDisabled}
                         title={bloqueio ?? undefined}
                         className={`w-full py-2.5 rounded-lg text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                          pode
-                            ? 'bg-primary-700 hover:bg-primary-800 text-white focus:ring-primary-500'
-                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          isDisabled
+                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            : 'bg-primary-700 hover:bg-primary-800 text-white focus:ring-primary-500'
                         }`}
                       >
-                        {emAndamento ? 'Solicitando...' : pode ? 'Resgatar' : (bloqueio ?? 'Indisponível')}
+                        {labelBotao(v, emAndamento)}
                       </button>
                     </div>
                   );
@@ -210,24 +297,7 @@ export function VantagensPage() {
             ) : (
               <div className="space-y-3">
                 {cupons.map(c => (
-                  <div key={c.id} className="card shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold text-gray-900 truncate">{c.vantagemNome}</h3>
-                        <StatusBadge status={c.status} />
-                      </div>
-                      <p className="text-gray-500 text-sm">{c.empresaNome} · {c.custoPago} moedas</p>
-                      <p className="text-gray-400 text-xs mt-1">
-                        Resgatado em {new Date(c.dataResgate).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2 shrink-0">
-                      <div className="bg-gray-50 border border-dashed border-gray-300 rounded-lg px-4 py-2 text-center">
-                        <p className="text-xs text-gray-400 mb-0.5">Código do Cupom</p>
-                        <p className="font-mono font-bold text-gray-800 tracking-widest text-sm">{c.codigoCupom}</p>
-                      </div>
-                    </div>
-                  </div>
+                  <CupomCard key={c.id} c={c} />
                 ))}
               </div>
             )}

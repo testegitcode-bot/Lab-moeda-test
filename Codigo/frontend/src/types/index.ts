@@ -29,6 +29,7 @@ export interface Vantagem {
   quantidadeCupons: number | null; // Controle de estoque total disponível
   cuponsResgatados: number;        // Quantidade de itens já processados na fila
   dataValidade: string | null;     // Data limite para resgatar o benefício
+  isResgateUnico: boolean;         // true = resgate único por aluno; false = múltiplos resgates
   empresaId: number;
   empresaNome: string;
 }
@@ -57,6 +58,8 @@ export interface Resgate {
   vantagemId: number;
   vantagemNome: string;
   empresaNome: string;
+  alunoId: number;
+  alunoNome: string;
   custoPago: number;
   codigoCupom: string;
   dataResgate: string;
@@ -68,6 +71,8 @@ export interface Cupom {
   vantagemId: number;
   vantagemNome: string;
   empresaNome: string;
+  alunoId: number;
+  alunoNome: string;
   custoPago: number;
   codigoCupom: string; // Token único criptografado/gerado para validação
   dataResgate: string;
@@ -81,8 +86,8 @@ export interface ResgateEmpresa {
   vantagemNome: string;
   alunoId: number;
   alunoNome: string;
-  custo: number;
+  custoPago: number;
   codigoCupom: string;
-  status: 'PENDENTE' | 'CONFIRMADO' | 'CANCELADO';
-  criadoEm: string;
+  status: 'ATIVO' | 'USADO' | 'EXPIRADO';
+  dataResgate: string;
 }

@@ -11,6 +11,8 @@ public class ResgateResponse {
     private Long vantagemId;
     private String vantagemNome;
     private String empresaNome;
+    private Long alunoId;
+    private String alunoNome;
     private Integer custoPago;
     private String codigoCupom;
     private LocalDateTime dataResgate;
@@ -22,6 +24,8 @@ public class ResgateResponse {
         dto.setVantagemId(r.getVantagem().getId());
         dto.setVantagemNome(r.getVantagem().getNome());
         dto.setEmpresaNome(r.getVantagem().getEmpresa().getNome());
+        dto.setAlunoId(r.getAluno().getId());
+        dto.setAlunoNome(r.getAluno().getNome());
         dto.setCustoPago(r.getVantagem().getCusto());
         dto.setCodigoCupom(r.getCodigoCupom());
         dto.setDataResgate(r.getDataResgate());
