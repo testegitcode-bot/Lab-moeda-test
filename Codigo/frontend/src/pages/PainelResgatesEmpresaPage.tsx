@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
-import type { Resgate } from '../types';
+import type { ResgateEmpresa } from '../types';
 
 export function PainelResgatesEmpresaPage() {
   const { usuario } = useAuth();
   const navigate = useNavigate();
 
-  const [resgates, setResgates] = useState<Resgate[]>([]);
+  const [resgates, setResgates] = useState<ResgateEmpresa[]>([]);
   const [loading, setLoading] = useState(true);
   const [confirmando, setConfirmando] = useState<number | null>(null);
   const [filtro, setFiltro] = useState<'TODOS' | 'PENDENTE' | 'CONFIRMADO'>('TODOS');
@@ -23,7 +23,7 @@ export function PainelResgatesEmpresaPage() {
     }
 
     api.resgatesDaEmpresa(empresaId)
-      .then(data => setResgates(data as Resgate[]))
+      .then(data => setResgates(data as ResgateEmpresa[]))
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
@@ -31,7 +31,7 @@ export function PainelResgatesEmpresaPage() {
   const handleConfirmar = async (resgateId: number) => {
     setConfirmando(resgateId);
     try {
-      const atualizado = await api.confirmarResgate(resgateId) as Resgate;
+      const atualizado = await api.confirmarResgate(resgateId) as ResgateEmpresa;
       setResgates(prev => prev.map(r => r.id === resgateId ? atualizado : r));
     } catch {
       alert('Erro ao confirmar resgate.');

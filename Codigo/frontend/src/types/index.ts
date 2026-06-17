@@ -54,14 +54,13 @@ export interface Transacao {
 
 export interface Resgate {
   id: number;
-  alunoId: number;
-  alunoNome: string;
   vantagemId: number;
   vantagemNome: string;
   empresaNome: string;
-  custo: number;
-  status: 'PENDENTE' | 'CONFIRMADO' | 'CANCELADO';
-  criadoEm: string;
+  custoPago: number;
+  codigoCupom: string;
+  dataResgate: string;
+  status: 'ATIVO' | 'USADO' | 'EXPIRADO';
 }
 
 export interface Cupom {
@@ -73,4 +72,17 @@ export interface Cupom {
   codigoCupom: string; // Token único criptografado/gerado para validação
   dataResgate: string;
   status: 'ATIVO' | 'USADO' | 'EXPIRADO';
+}
+
+// Visão da empresa parceira sobre resgates de suas vantagens
+export interface ResgateEmpresa {
+  id: number;
+  vantagemId: number;
+  vantagemNome: string;
+  alunoId: number;
+  alunoNome: string;
+  custo: number;
+  codigoCupom: string;
+  status: 'PENDENTE' | 'CONFIRMADO' | 'CANCELADO';
+  criadoEm: string;
 }

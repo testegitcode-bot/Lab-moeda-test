@@ -1,10 +1,12 @@
 package com.moedaestudantil.controller;
 
+import com.moedaestudantil.dto.ResgateRequest;
 import com.moedaestudantil.dto.ResgateResponse;
 import com.moedaestudantil.messaging.ResgateProducer;
 import com.moedaestudantil.repository.AlunoRepository;
 import com.moedaestudantil.repository.ResgateRepository;
 import com.moedaestudantil.repository.VantagemRepository;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +32,26 @@ public class ResgateController {
         this.vantagemRepository = vantagemRepository;
     }
 
-    // Enfileira pedido de resgate de forma assíncrona via RabbitMQ
+    /**
+     * POST /api/resgates
+     * Publica o pedido de resgate na fila RabbitMQ e retorna HTTP 202 imediatamente.
+     */
+    @PostMapping
+    public ResponseEntity<?> resgatar(@Valid @RequestBody ResgateRequest request) {
+        if (!alunoRepository.existsById(request.getAlunoId())) {
+            return ResponseEntity.badRequest().body(Map.of("erro", "Aluno não encontrado."));
+        }
+        if (!vantagemRepository.existsById(request.getVantagemId())) {
+            return ResponseEntity.badRequest().body(Map.of("erro", "Vantagem não encontrada."));
+        }
+
+        resgateProducer.enviar(request.getAlunoId(), request.getVantagemId());
+        return ResponseEntity.accepted().body(Map.of("mensagem", "Processando resgate..."));
+    }
+
+    /**
+     * POST /api/resgates/solicitar (mantido para compatibilidade)
+     */
     @PostMapping("/solicitar")
     public ResponseEntity<?> solicitar(@RequestBody Map<String, Long> body) {
         Long alunoId = body.get("alunoId");
@@ -47,10 +68,13 @@ public class ResgateController {
         }
 
         resgateProducer.enviar(alunoId, vantagemId);
-        return ResponseEntity.accepted().body(Map.of("mensagem", "Pedido de resgate enfileirado com sucesso."));
+        return ResponseEntity.accepted().body(Map.of("mensagem", "Processando resgate..."));
     }
 
-    // Histórico de cupons do aluno
+    /**
+     * GET /api/resgates/aluno/{alunoId}
+     * Histórico de cupons do aluno.
+     */
     @GetMapping("/aluno/{alunoId}")
     public List<ResgateResponse> listarPorAluno(@PathVariable Long alunoId) {
         return resgateRepository.findByAlunoIdOrderByDataResgateDesc(alunoId)

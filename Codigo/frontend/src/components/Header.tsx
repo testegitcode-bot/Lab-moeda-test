@@ -90,12 +90,20 @@ export function Header() {
             onClick={() => navigate(homePath)}
             className="flex items-center gap-2.5 flex-shrink-0 hover:opacity-80 transition-opacity"
           >
-            <div className="w-8 h-8 bg-primary-400 rounded-lg flex items-center justify-center">
-              <svg className="w-5 h-5 text-primary-900" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 14a6 6 0 110-12 6 6 0 010 12zm.75-9.25a.75.75 0 00-1.5 0v2.5H7a.75.75 0 000 1.5h2.25v2.5a.75.75 0 001.5 0v-2.5H13a.75.75 0 000-1.5h-2.25v-2.5z"/>
-              </svg>
+            <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center bg-primary-400">
+              <img
+                src="/coin-stack.png"
+                alt="Meritum logo"
+                className="w-8 h-8 object-contain"
+                onError={e => {
+                  const img = e.currentTarget;
+                  img.style.display = 'none';
+                  const parent = img.parentElement!;
+                  parent.innerHTML = `<svg class="w-5 h-5 text-primary-900" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 14a6 6 0 110-12 6 6 0 010 12zm.75-9.25a.75.75 0 00-1.5 0v2.5H7a.75.75 0 000 1.5h2.25v2.5a.75.75 0 001.5 0v-2.5H13a.75.75 0 000-1.5h-2.25v-2.5z"/></svg>`;
+                }}
+              />
             </div>
-            <span className="text-white font-semibold text-lg tracking-tight hidden sm:block">Moeda Estudantil</span>
+            <span className="text-white font-semibold text-lg tracking-tight hidden sm:block">Meritum</span>
           </button>
 
           {/* Lado direito de navegação */}

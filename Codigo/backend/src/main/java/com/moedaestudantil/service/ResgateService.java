@@ -35,6 +35,11 @@ public class ResgateService {
         Vantagem vantagem = vantagemRepository.findById(vantagemId)
                 .orElseThrow(() -> new IllegalArgumentException("Vantagem não encontrada: " + vantagemId));
 
+        // Validar resgate duplicado
+        if (resgateRepository.existsByAlunoIdAndVantagemId(alunoId, vantagemId)) {
+            throw new IllegalStateException("Este aluno já resgatou esta vantagem.");
+        }
+
         // Validar validade
         if (vantagem.getDataValidade() != null && vantagem.getDataValidade().isBefore(LocalDate.now())) {
             throw new IllegalStateException("Esta vantagem está expirada.");

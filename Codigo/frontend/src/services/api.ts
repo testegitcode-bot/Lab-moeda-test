@@ -116,6 +116,17 @@ export const api = {
   listarCuponsAluno: (alunoId: number) =>
     request(`/resgates/aluno/${alunoId}`),
 
+  /** Alias usado pela LojaDasVantagens: enfileira resgate via POST /api/resgates (retorna 202) */
+  resgatar: (alunoId: number, vantagemId: number) =>
+    request('/resgates', {
+      method: 'POST',
+      body: JSON.stringify({ alunoId, vantagemId }),
+    }),
+
+  /** Alias usado pela LojaDasVantagens: histórico de resgates do aluno */
+  resgatesDoAluno: (alunoId: number) =>
+    request(`/resgates/aluno/${alunoId}`),
+
   /** Lista de resgates pendentes/confirmados para controle da empresa parceira */
   resgatesDaEmpresa: (empresaId: number) =>
     request(`/resgates/empresa/${empresaId}`),

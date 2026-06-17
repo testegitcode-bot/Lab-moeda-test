@@ -24,9 +24,14 @@ public class ResgateConsumer {
         try {
             resgateService.processar(message.getAlunoId(), message.getVantagemId());
             log.info("Resgate concluído: alunoId={} vantagemId={}", message.getAlunoId(), message.getVantagemId());
+        } catch (IllegalStateException e) {
+            // Violação de regra de negócio (duplicata, saldo insuficiente, estoque zerado, expirado)
+            // Mensagem descartada com ACK para não gerar loop na fila
+            log.warn("Resgate recusado (regra de negócio): alunoId={} vantagemId={} | motivo: {}",
+                    message.getAlunoId(), message.getVantagemId(), e.getMessage());
         } catch (Exception e) {
-            log.error("Resgate falhou: {} | motivo: {}", message, e.getMessage());
-            // Mensagem é descartada (não recolocada na fila) para evitar loop infinito em falhas de negócio
+            // Erro inesperado (banco fora, NPE, etc.) — também descartamos para evitar loop infinito
+            log.error("Resgate falhou com erro inesperado: {} | motivo: {}", message, e.getMessage(), e);
         }
     }
 }
