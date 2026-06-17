@@ -96,6 +96,9 @@ export const api = {
     body: JSON.stringify(payload),
   }),
 
+  listarProfessores: () =>
+    request('/professores'),
+
   /** Extrato de envios efetuados pelo professor */
   extratoDosProfessor: (professorId: number) =>
     request(`/transacoes/professor/${professorId}`),

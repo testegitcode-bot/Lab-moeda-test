@@ -11,6 +11,7 @@ const painelRota: Record<TipoUsuario, string> = {
   ALUNO: '/dashboard/aluno',
   PROFESSOR: '/dashboard/professor',
   EMPRESA: '/dashboard/empresa',
+  ADMIN: '/admin',
 };
 
 const acoesNav: Partial<Record<TipoUsuario, { label: string; rota: string; icon: React.ReactNode }[]>> = {
@@ -62,6 +63,7 @@ const tipoLabel: Record<TipoUsuario, string> = {
   ALUNO: 'Aluno',
   PROFESSOR: 'Professor',
   EMPRESA: 'Empresa',
+  ADMIN: 'Administrador',
 };
 
 export function Header() {

@@ -14,7 +14,7 @@ import { ExtratoPage } from "./pages/ExtratoPage";
 import { EnviarMoedasPage } from "./pages/EnviarMoedasPage";
 import { LojaDasVantagensPage } from "./pages/LojaDasVantagensPage";
 import { PainelResgatesEmpresaPage } from "./pages/PainelResgatesEmpresaPage";
-import { CadastroProfessorPage } from "./pages/CadastroProfessorPage";
+import { AdminPage } from "./pages/AdminPage";
 
 export default function App() {
   return (
@@ -25,6 +25,16 @@ export default function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/cadastro/aluno" element={<CadastroAlunoPage />} />
           <Route path="/cadastro/empresa" element={<CadastroEmpresaPage />} />
+
+          {/* Admin */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminPage />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Dashboards */}
           <Route
@@ -70,7 +80,7 @@ export default function App() {
             }
           />
 
-          {/* Rotas do upstream */}
+          {/* Rotas do aluno */}
           <Route
             path="/vantagens"
             element={
@@ -112,12 +122,6 @@ export default function App() {
                 <PainelResgatesEmpresaPage />
               </ProtectedRoute>
             }
-          />
-
-          {/* Fallback */}
-          <Route
-            path="/cadastro/professor"
-            element={<CadastroProfessorPage />}
           />
 
           {/* Fallback */}

@@ -5,6 +5,9 @@ import { api } from '../services/api';
 import type { Usuario, TipoUsuario } from '../types';
 import GreenDots from '../components/GreenDots';
 
+const ADMIN_EMAIL = 'admin@meritum.edu';
+const ADMIN_SENHA = 'admin123';
+
 export function LoginPage() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
@@ -19,6 +22,18 @@ export function LoginPage() {
     setLoading(true);
 
     try {
+      // Login de administrador local (sem backend)
+      if (email === ADMIN_EMAIL && senha === ADMIN_SENHA) {
+        login({
+          id: 0,
+          nome: 'Administrador',
+          email: ADMIN_EMAIL,
+          tipo: 'ADMIN',
+        });
+        navigate('/admin');
+        return;
+      }
+
       const usuario = await api.login(email, senha) as Usuario;
       login(usuario);
 
@@ -26,6 +41,7 @@ export function LoginPage() {
         ALUNO: '/dashboard/aluno',
         PROFESSOR: '/dashboard/professor',
         EMPRESA: '/dashboard/empresa',
+        ADMIN: '/admin',
       };
       navigate(rotas[usuario.tipo]);
     } catch (err: unknown) {
@@ -41,11 +57,18 @@ export function LoginPage() {
       <div className="relative w-full max-w-md">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-400 rounded-2xl mb-4 shadow-lg">
-            <svg className="w-9 h-9 text-primary-950" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 14a6 6 0 110-12 6 6 0 010 12zm.75-9.25a.75.75 0 00-1.5 0v2.5H7a.75.75 0 000 1.5h2.25v2.5a.75.75 0 001.5 0v-2.5H13a.75.75 0 000-1.5h-2.25v-2.5z"/>
-            </svg>
+            <img
+              src="/coin-stack.png"
+              alt="Meritum"
+              className="w-10 h-10 object-contain"
+              onError={e => {
+                e.currentTarget.style.display = 'none';
+                const parent = e.currentTarget.parentElement!;
+                parent.innerHTML = `<svg class="w-9 h-9 text-primary-950" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 14a6 6 0 110-12 6 6 0 010 12zm.75-9.25a.75.75 0 00-1.5 0v2.5H7a.75.75 0 000 1.5h2.25v2.5a.75.75 0 001.5 0v-2.5H13a.75.75 0 000-1.5h-2.25v-2.5z"/></svg>`;
+              }}
+            />
           </div>
-          <h1 className="text-3xl font-bold text-white">Moeda Estudantil</h1>
+          <h1 className="text-3xl font-bold text-white">Meritum</h1>
           <p className="text-primary-300 mt-1 text-sm">Faça login para continuar</p>
         </div>
 
