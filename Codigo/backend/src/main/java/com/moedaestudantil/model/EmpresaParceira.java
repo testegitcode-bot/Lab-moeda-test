@@ -18,4 +18,7 @@ public class EmpresaParceira extends Usuario {
 
     @Column(columnDefinition = "TEXT")
     private String descricao;
+
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private boolean ativo = true;
 }

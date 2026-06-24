@@ -18,6 +18,7 @@ public class UsuarioResponse {
     private String descricao;
     private Long instituicaoId;
     private String instituicaoNome;
+    private Boolean ativo;
 
     public static UsuarioResponse from(Usuario usuario) {
         UsuarioResponse dto = new UsuarioResponse();
@@ -45,6 +46,7 @@ public class UsuarioResponse {
         } else if (usuario instanceof com.moedaestudantil.model.EmpresaParceira empresa) {
             dto.setCnpj(empresa.getCnpj());
             dto.setDescricao(empresa.getDescricao());
+            dto.setAtivo(empresa.isAtivo());
         }
 
         return dto;

@@ -6,13 +6,15 @@ import { api } from '../services/api';
 import type { Usuario } from '../types';
 
 export function PerfilAlunoPage() {
-  const { usuario, login } = useAuth();
+  const { usuario, login, logout } = useAuth();
   const navigate = useNavigate();
 
   const [editando, setEditando] = useState(false);
   const [loading, setLoading] = useState(false);
   const [sucesso, setSucesso] = useState('');
   const [erro, setErro] = useState('');
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deletando, setDeletando] = useState(false);
 
   const [form, setForm] = useState({
     nome: usuario?.nome ?? '',
@@ -81,6 +83,20 @@ export function PerfilAlunoPage() {
       novaSenha: '',
       confirmarSenha: '',
     });
+  };
+
+  const handleDeletarConta = async () => {
+    setDeletando(true);
+    try {
+      await api.deletarContaAluno(usuario.id);
+      logout();
+      navigate('/login');
+    } catch (err: unknown) {
+      setErro(err instanceof Error ? err.message : 'Erro ao excluir conta.');
+      setShowDeleteModal(false);
+    } finally {
+      setDeletando(false);
+    }
   };
 
   const iniciais = usuario.nome
@@ -293,9 +309,47 @@ export function PerfilAlunoPage() {
               </svg>
               Voltar ao Painel
             </button>
+
+            <button
+              onClick={() => setShowDeleteModal(true)}
+              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 transition-colors text-sm font-medium"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              Excluir conta
+            </button>
           </div>
         </div>
       </main>
+
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6">
+            <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.07 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">Excluir conta</h3>
+            <p className="text-sm text-gray-500 text-center mb-6">
+              Tem certeza que deseja excluir sua conta? Todos os seus dados, cupons e histórico serão removidos permanentemente. Esta ação não pode ser desfeita.
+            </p>
+            <div className="flex gap-3">
+              <button onClick={() => setShowDeleteModal(false)} className="btn-secondary flex-1" disabled={deletando}>
+                Cancelar
+              </button>
+              <button
+                onClick={handleDeletarConta}
+                className="flex-1 py-2.5 px-4 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium text-sm transition-colors disabled:opacity-50"
+                disabled={deletando}
+              >
+                {deletando ? 'Excluindo...' : 'Excluir conta'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

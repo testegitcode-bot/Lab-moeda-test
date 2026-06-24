@@ -14,6 +14,7 @@ export interface Usuario {
   descricao?: string;
   instituicaoId?: number;
   instituicaoNome?: string;
+  ativo?: boolean;
 }
 
 export interface Instituicao {

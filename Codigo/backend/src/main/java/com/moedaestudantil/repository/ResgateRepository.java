@@ -17,5 +17,8 @@ public interface ResgateRepository extends JpaRepository<Resgate, Long> {
     Optional<Resgate> findByCodigoCupom(String codigoCupom);
 
     @Transactional
+    void deleteByAlunoId(Long alunoId);
+
+    @Transactional
     void deleteByVantagemId(Long vantagemId);
 }

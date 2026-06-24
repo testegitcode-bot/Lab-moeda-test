@@ -3,12 +3,17 @@ package com.moedaestudantil.controller;
 import com.moedaestudantil.dto.UsuarioResponse;
 import com.moedaestudantil.model.Aluno;
 import com.moedaestudantil.model.EmpresaParceira;
+import com.moedaestudantil.model.Vantagem;
 import com.moedaestudantil.repository.AlunoRepository;
 import com.moedaestudantil.repository.EmpresaParceiraRepository;
+import com.moedaestudantil.repository.ResgateRepository;
+import com.moedaestudantil.repository.TransacaoRepository;
 import com.moedaestudantil.repository.UsuarioRepository;
+import com.moedaestudantil.repository.VantagemRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -19,19 +24,24 @@ public class PerfilController {
     private final AlunoRepository alunoRepository;
     private final EmpresaParceiraRepository empresaRepository;
     private final UsuarioRepository usuarioRepository;
+    private final ResgateRepository resgateRepository;
+    private final TransacaoRepository transacaoRepository;
+    private final VantagemRepository vantagemRepository;
 
     public PerfilController(AlunoRepository alunoRepository,
                             EmpresaParceiraRepository empresaRepository,
-                            UsuarioRepository usuarioRepository) {
+                            UsuarioRepository usuarioRepository,
+                            ResgateRepository resgateRepository,
+                            TransacaoRepository transacaoRepository,
+                            VantagemRepository vantagemRepository) {
         this.alunoRepository = alunoRepository;
         this.empresaRepository = empresaRepository;
         this.usuarioRepository = usuarioRepository;
+        this.resgateRepository = resgateRepository;
+        this.transacaoRepository = transacaoRepository;
+        this.vantagemRepository = vantagemRepository;
     }
 
-    /**
-     * Atualiza dados do perfil do aluno.
-     * Body: { nome, email, curso, endereco, rg, senhaAtual?, novaSenha? }
-     */
     @PutMapping("/aluno/{id}")
     public ResponseEntity<?> atualizarAluno(@PathVariable Long id,
                                              @RequestBody Map<String, String> body) {
@@ -41,7 +51,6 @@ public class PerfilController {
         }
         Aluno aluno = opt.get();
 
-        // Atualizar e-mail: verificar duplicata
         String novoEmail = body.get("email");
         if (novoEmail != null && !novoEmail.equals(aluno.getEmail())) {
             if (usuarioRepository.existsByEmail(novoEmail)) {
@@ -55,7 +64,6 @@ public class PerfilController {
         if (body.containsKey("endereco")) aluno.setEndereco(body.get("endereco"));
         if (body.containsKey("rg"))       aluno.setRg(body.get("rg"));
 
-        // Alterar senha (opcional)
         String senhaAtual = body.get("senhaAtual");
         String novaSenha  = body.get("novaSenha");
         if (novaSenha != null && !novaSenha.isBlank()) {
@@ -69,10 +77,15 @@ public class PerfilController {
         return ResponseEntity.ok(UsuarioResponse.from(saved));
     }
 
-    /**
-     * Atualiza dados do perfil da empresa.
-     * Body: { nome, email, descricao, senhaAtual?, novaSenha? }
-     */
+    @DeleteMapping("/aluno/{id}")
+    public ResponseEntity<?> deletarAluno(@PathVariable Long id) {
+        if (!alunoRepository.existsById(id)) return ResponseEntity.notFound().build();
+        resgateRepository.deleteByAlunoId(id);
+        transacaoRepository.deleteByDestinatarioId(id);
+        alunoRepository.deleteById(id);
+        return ResponseEntity.ok(Map.of("mensagem", "Conta removida com sucesso."));
+    }
+
     @PutMapping("/empresa/{id}")
     public ResponseEntity<?> atualizarEmpresa(@PathVariable Long id,
                                                @RequestBody Map<String, String> body) {
@@ -82,7 +95,6 @@ public class PerfilController {
         }
         EmpresaParceira empresa = opt.get();
 
-        // Atualizar e-mail: verificar duplicata
         String novoEmail = body.get("email");
         if (novoEmail != null && !novoEmail.equals(empresa.getEmail())) {
             if (usuarioRepository.existsByEmail(novoEmail)) {
@@ -94,7 +106,6 @@ public class PerfilController {
         if (body.containsKey("nome"))      empresa.setNome(body.get("nome"));
         if (body.containsKey("descricao")) empresa.setDescricao(body.get("descricao"));
 
-        // Alterar senha (opcional)
         String senhaAtual = body.get("senhaAtual");
         String novaSenha  = body.get("novaSenha");
         if (novaSenha != null && !novaSenha.isBlank()) {
@@ -106,5 +117,19 @@ public class PerfilController {
 
         EmpresaParceira saved = empresaRepository.save(empresa);
         return ResponseEntity.ok(UsuarioResponse.from(saved));
+    }
+
+    @DeleteMapping("/empresa/{id}")
+    public ResponseEntity<?> deletarEmpresa(@PathVariable Long id) {
+        Optional<EmpresaParceira> opt = empresaRepository.findById(id);
+        if (opt.isEmpty()) return ResponseEntity.notFound().build();
+
+        List<Vantagem> vantagens = vantagemRepository.findByEmpresaId(id);
+        for (Vantagem v : vantagens) {
+            resgateRepository.deleteByVantagemId(v.getId());
+        }
+        vantagemRepository.deleteAll(vantagens);
+        empresaRepository.deleteById(id);
+        return ResponseEntity.ok(Map.of("mensagem", "Conta removida com sucesso."));
     }
 }

@@ -146,4 +146,28 @@ export const api = {
   /** Consulta pública de cupom pelo código (usado na página do QR) */
   buscarCupomPublico: (codigo: string) =>
     request(`/resgates/cupom/${codigo}`),
+
+  // ── ADMIN — Professores
+  atualizarProfessor: (id: number, payload: object) =>
+    request(`/professores/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
+
+  deletarProfessor: (id: number) =>
+    request(`/professores/${id}`, { method: 'DELETE' }),
+
+  // ── ADMIN — Empresas
+  listarEmpresas: () =>
+    request('/empresas'),
+
+  toggleAtivoProfessor: (id: number) =>
+    request(`/empresas/${id}/ativo`, { method: 'PUT' }),
+
+  deletarEmpresa: (id: number) =>
+    request(`/empresas/${id}`, { method: 'DELETE' }),
+
+  // ── EXCLUIR CONTA
+  deletarContaAluno: (id: number) =>
+    request(`/perfil/aluno/${id}`, { method: 'DELETE' }),
+
+  deletarContaEmpresa: (id: number) =>
+    request(`/perfil/empresa/${id}`, { method: 'DELETE' }),
 };
