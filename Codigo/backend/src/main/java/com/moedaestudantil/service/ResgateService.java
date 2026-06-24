@@ -18,13 +18,16 @@ public class ResgateService {
     private final AlunoRepository alunoRepository;
     private final VantagemRepository vantagemRepository;
     private final ResgateRepository resgateRepository;
+    private final EmailService emailService;
 
     public ResgateService(AlunoRepository alunoRepository,
                           VantagemRepository vantagemRepository,
-                          ResgateRepository resgateRepository) {
+                          ResgateRepository resgateRepository,
+                          EmailService emailService) {
         this.alunoRepository = alunoRepository;
         this.vantagemRepository = vantagemRepository;
         this.resgateRepository = resgateRepository;
+        this.emailService = emailService;
     }
 
     @Transactional
@@ -72,6 +75,16 @@ public class ResgateService {
         resgate.setVantagem(vantagem);
         resgate.setCodigoCupom(UUID.randomUUID().toString().replace("-", "").substring(0, 12).toUpperCase());
 
-        return resgateRepository.save(resgate);
+        Resgate salvo = resgateRepository.save(resgate);
+
+        emailService.enviarEmailResgate(
+                aluno.getEmail(),
+                aluno.getNome(),
+                vantagem.getNome(),
+                vantagem.getEmpresa().getNome(),
+                salvo.getCodigoCupom()
+        );
+
+        return salvo;
     }
 }

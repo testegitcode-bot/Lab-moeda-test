@@ -109,6 +109,17 @@ public class ResgateController {
     }
 
     /**
+     * GET /api/resgates/cupom/{codigo}
+     * Endpoint público para buscar informações de um cupom pelo código (usado na página pública do QR).
+     */
+    @GetMapping("/cupom/{codigo}")
+    public ResponseEntity<?> buscarPorCodigo(@PathVariable String codigo) {
+        return resgateRepository.findByCodigoCupom(codigo)
+                .map(r -> ResponseEntity.ok(ResgateResponse.from(r)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    /**
      * PUT /api/resgates/{id}/usar
      * Marca um cupom como USADO via QR Code scan.
      */

@@ -143,4 +143,7 @@ export const api = {
     request(`/resgates/${resgateId}/confirmar`, {
       method: 'PUT'
     }),
+  /** Consulta pública de cupom pelo código (usado na página do QR) */
+  buscarCupomPublico: (codigo: string) =>
+    request(`/resgates/cupom/${codigo}`),
 };

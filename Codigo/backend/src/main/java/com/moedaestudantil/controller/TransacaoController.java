@@ -8,6 +8,7 @@ import com.moedaestudantil.model.Transacao;
 import com.moedaestudantil.repository.AlunoRepository;
 import com.moedaestudantil.repository.ProfessorRepository;
 import com.moedaestudantil.repository.TransacaoRepository;
+import com.moedaestudantil.service.EmailService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,19 +23,18 @@ public class TransacaoController {
     private final TransacaoRepository transacaoRepository;
     private final ProfessorRepository professorRepository;
     private final AlunoRepository alunoRepository;
+    private final EmailService emailService;
 
     public TransacaoController(TransacaoRepository transacaoRepository,
                                ProfessorRepository professorRepository,
-                               AlunoRepository alunoRepository) {
+                               AlunoRepository alunoRepository,
+                               EmailService emailService) {
         this.transacaoRepository = transacaoRepository;
         this.professorRepository = professorRepository;
         this.alunoRepository = alunoRepository;
+        this.emailService = emailService;
     }
 
-    /**
-     * POST /api/transacoes/enviar
-     * Professor envia moedas para um aluno.
-     */
     @PostMapping("/enviar")
     public ResponseEntity<?> enviarMoedas(@Valid @RequestBody EnviarMoedasRequest request) {
         Professor professor = professorRepository.findById(request.getProfessorId())
@@ -70,13 +70,17 @@ public class TransacaoController {
         transacao.setMensagem(request.getMensagem());
         Transacao saved = transacaoRepository.save(transacao);
 
+        emailService.enviarEmailMoedas(
+                aluno.getEmail(),
+                aluno.getNome(),
+                professor.getNome(),
+                request.getQuantidade(),
+                request.getMensagem() != null ? request.getMensagem() : "Parabéns pelo seu desempenho!"
+        );
+
         return ResponseEntity.ok(TransacaoResponse.from(saved));
     }
 
-    /**
-     * GET /api/transacoes/professor/{id}
-     * Extrato de moedas enviadas pelo professor.
-     */
     @GetMapping("/professor/{id}")
     public ResponseEntity<?> extratoDosProfessor(@PathVariable Long id) {
         List<TransacaoResponse> lista = transacaoRepository
@@ -87,10 +91,6 @@ public class TransacaoController {
         return ResponseEntity.ok(lista);
     }
 
-    /**
-     * GET /api/transacoes/aluno/{id}
-     * Extrato de moedas recebidas pelo aluno.
-     */
     @GetMapping("/aluno/{id}")
     public ResponseEntity<?> extratoDoAluno(@PathVariable Long id) {
         List<TransacaoResponse> lista = transacaoRepository
@@ -101,10 +101,6 @@ public class TransacaoController {
         return ResponseEntity.ok(lista);
     }
 
-    /**
-     * GET /api/transacoes/alunos/instituicao/{id}
-     * Lista alunos da mesma instituição do professor (para o select de envio).
-     */
     @GetMapping("/alunos/instituicao/{instituicaoId}")
     public ResponseEntity<?> alunosPorInstituicao(@PathVariable Long instituicaoId) {
         List<Map<String, Object>> alunos = alunoRepository.findAll()

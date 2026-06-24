@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ResgateRepository extends JpaRepository<Resgate, Long> {
@@ -13,6 +14,7 @@ public interface ResgateRepository extends JpaRepository<Resgate, Long> {
     List<Resgate> findByVantagemEmpresaIdOrderByDataResgateDesc(Long empresaId);
     long countByVantagemId(Long vantagemId);
     boolean existsByAlunoIdAndVantagemId(Long alunoId, Long vantagemId);
+    Optional<Resgate> findByCodigoCupom(String codigoCupom);
 
     @Transactional
     void deleteByVantagemId(Long vantagemId);

@@ -4,7 +4,6 @@ import { Header } from '../components/Header';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
 import type { AlunoResumo, Transacao } from '../types';
-import { enviarEmailMoedas } from '../services/emailService';
 
 export function EnviarMoedasPage() {
   const { usuario, login } = useAuth();
@@ -61,29 +60,6 @@ export function EnviarMoedasPage() {
         quantidade: qtd,
         mensagem: form.mensagem || undefined,
       }) as Transacao;
-
-      const alunoSelecionado = alunos.find(
-        a => a.id === Number(form.alunoId)
-      );
-
-      if (alunoSelecionado?.email) {
-        try {
-          await enviarEmailMoedas({
-            alunoNome: alunoSelecionado.nome,
-            alunoEmail: alunoSelecionado.email,
-            professorNome: usuario?.nome || 'Professor',
-            quantidade: qtd,
-            mensagem:
-              form.mensagem ||
-              'Parabéns pelo seu desempenho!',
-          });
-        } catch (emailError) {
-          console.error(
-            'Erro ao enviar email:',
-            emailError
-          );
-        }
-      }
 
       // Atualiza saldo na sessão
       if (usuario) {

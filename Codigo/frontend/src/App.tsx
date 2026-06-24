@@ -15,6 +15,123 @@ import { EnviarMoedasPage } from "./pages/EnviarMoedasPage";
 import { LojaDasVantagensPage } from "./pages/LojaDasVantagensPage";
 import { PainelResgatesEmpresaPage } from "./pages/PainelResgatesEmpresaPage";
 import { AdminPage } from "./pages/AdminPage";
+import { CupomPublicoPage } from "./pages/CupomPublicoPage";
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Públicas */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/cadastro/aluno" element={<CadastroAlunoPage />} />
+          <Route path="/cadastro/empresa" element={<CadastroEmpresaPage />} />
+          <Route path="/cupom/:codigo" element={<CupomPublicoPage />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminPage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Dashboards */}
+          <Route
+            path="/dashboard/aluno"
+            element={
+              <ProtectedRoute>
+                <DashboardAlunoPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/professor"
+            element={
+              <ProtectedRoute>
+                <DashboardProfessorPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/empresa"
+            element={
+              <ProtectedRoute>
+                <DashboardEmpresaPage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Perfis */}
+          <Route
+            path="/perfil/aluno"
+            element={
+              <ProtectedRoute>
+                <PerfilAlunoPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/perfil/empresa"
+            element={
+              <ProtectedRoute>
+                <PerfilEmpresaPage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Rotas do aluno */}
+          <Route
+            path="/vantagens"
+            element={
+              <ProtectedRoute>
+                <VantagensPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/extrato"
+            element={
+              <ProtectedRoute>
+                <ExtratoPage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Sistema de moedas */}
+          <Route
+            path="/professor/enviar-moedas"
+            element={
+              <ProtectedRoute>
+                <EnviarMoedasPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/aluno/vantagens"
+            element={
+              <ProtectedRoute>
+                <LojaDasVantagensPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/empresa/resgates"
+            element={
+              <ProtectedRoute>
+                <PainelResgatesEmpresaPage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
+}
+
 
 export default function App() {
   return (

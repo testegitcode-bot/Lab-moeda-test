@@ -78,12 +78,12 @@ function CupomCard({ c }: { c: Cupom }) {
         ) : (
           <div className="bg-white border border-gray-200 rounded-lg p-3 flex flex-col items-center gap-1">
             <QRCodeSVG
-              value={String(c.id)}
+              value={`${window.location.origin}/cupom/${c.codigoCupom}`}
               size={96}
               level="M"
               includeMargin={false}
             />
-            <p className="text-xs text-gray-400">Escaneie para resgatar</p>
+            <p className="text-xs text-gray-400">Escaneie para ver o cupom</p>
           </div>
         )}
       </div>

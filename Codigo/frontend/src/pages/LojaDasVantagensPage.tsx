@@ -56,8 +56,8 @@ function CupomHistoricoCard({ r, statusConfig }: {
             <p className="text-xs text-gray-400 font-mono">#{r.codigoCupom}</p>
           ) : (
             <div className="bg-white border border-gray-100 rounded-lg p-2 inline-flex flex-col items-center gap-1">
-              <QRCodeSVG value={String(r.id)} size={80} level="M" includeMargin={false} />
-              <p className="text-xs text-gray-400">Escaneie para resgatar</p>
+              <QRCodeSVG value={`${window.location.origin}/cupom/${r.codigoCupom}`} size={80} level="M" includeMargin={false} />
+              <p className="text-xs text-gray-400">Escaneie para ver o cupom</p>
             </div>
           )}
 
