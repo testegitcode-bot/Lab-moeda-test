@@ -131,7 +131,19 @@ export function LojaDasVantagensPage() {
       setToast(`Seu resgate de "${vantagem.nome}" está sendo processado!`);
       setTimeout(() => setToast(''), 5000);
 
-      setTimeout(() => carregarResgates(), 800);
+      // Poll until the new resgate appears (up to 5s)
+      let tentativas = 0;
+      const poll = () => {
+        tentativas++;
+        (api.resgatesDoAluno(alunoId) as Promise<Resgate[]>)
+          .then(lista => {
+            setResgates(lista);
+            const apareceu = lista.some(r => r.vantagemId === vantagem.id);
+            if (!apareceu && tentativas < 5) setTimeout(poll, 1000);
+          })
+          .catch(() => {});
+      };
+      setTimeout(poll, 800);
     } catch (err: unknown) {
       setErro(err instanceof Error ? err.message : 'Erro ao resgatar.');
     } finally {

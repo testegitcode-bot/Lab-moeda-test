@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
@@ -28,6 +29,7 @@ public class EmailService {
         this.mailSender = mailSender;
     }
 
+    @Async
     public void enviarEmailMoedas(String toEmail, String alunoNome, String professorNome,
                                    int quantidade, String mensagem) {
         try {
@@ -44,6 +46,7 @@ public class EmailService {
         }
     }
 
+    @Async
     public void enviarEmailResgate(String toEmail, String alunoNome, String vantagemNome,
                                     String empresaNome, String codigoCupom) {
         try {

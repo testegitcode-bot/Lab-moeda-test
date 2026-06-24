@@ -136,10 +136,21 @@ export function VantagensPage() {
     try {
       await api.solicitarResgate(usuario.id, v.id);
       setMensagem({ tipo: 'sucesso', texto: `Resgate de "${v.nome}" enfileirado! Seu cupom estará disponível em instantes.` });
-      // Recarrega lista de vantagens para atualizar cuponsResgatados
       api.listarTodasVantagens().then(data => setVantagens(data as Vantagem[])).catch(() => {});
-      // Recarrega cupons após curto intervalo (consumer é quase instantâneo)
-      setTimeout(() => carregarCupons(), 800);
+      // Poll until the new coupon appears (up to 5s)
+      let tentativas = 0;
+      const poll = () => {
+        tentativas++;
+        api.listarCuponsAluno(usuario.id)
+          .then(data => {
+            const lista = data as Cupom[];
+            setCupons(lista);
+            const apareceu = lista.some(c => c.vantagemId === v.id);
+            if (!apareceu && tentativas < 5) setTimeout(poll, 1000);
+          })
+          .catch(() => {});
+      };
+      setTimeout(poll, 800);
     } catch (err: unknown) {
       setMensagem({ tipo: 'erro', texto: err instanceof Error ? err.message : 'Erro ao solicitar resgate.' });
     } finally {
