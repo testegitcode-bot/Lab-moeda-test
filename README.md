@@ -1,234 +1,350 @@
-# 🛠️ Autofix - Gestão Inteligente de Oficinas 👨‍💻
+# 🏷️ Sistema de Moeda Estudantil
 
-> Sistema integrado de automação operacional para oficinas mecânicas.  
-> Foco na eliminação de gargalos na triagem, agendamento ágil e controle do ciclo de vida de Ordens de Serviço e estoques.
-
----
-
-![PUC Minas](https://img.shields.io/badge/PUC_Minas-Engenharia_de_Software-red?style=for-the-badge&logo=bookstack&logoColor=white)
-![Disciplina](https://img.shields.io/badge/Disciplina-Projeto_de_Software-orange?style=for-the-badge&logo=githubactions&logoColor=white)
-![Versão](https://img.shields.io/badge/Vers%C3%A3o-v1.0.0-blue?style=for-the-badge)
-
-### Stack Tecnológica
-
-### 📊 Status e Métricas do Projeto
-
-[![Versão](https://img.shields.io/badge/Versão-v1.0.0-blue?style=for-the-badge)](https://github.com/Mateus7799/Autofix/releases) ![React](https://img.shields.io/badge/React-19.1.1-007ec6?style=for-the-badge&logo=react&logoColor=white) ![Vite](https://img.shields.io/badge/Vite-7.1.2-007ec6?style=for-the-badge&logo=vite&logoColor=white) ![Java](https://img.shields.io/badge/Java-17-007ec6?style=for-the-badge&logo=openjdk&logoColor=white) ![Maven](https://img.shields.io/badge/Maven-3.9.9-007ec6?style=for-the-badge&logo=apachemaven&logoColor=white) ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.3.5-007ec6?style=for-the-badge&logo=springboot&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-007ec6?style=for-the-badge&logo=tailwind-css&logoColor=white) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-007ec6?style=for-the-badge&logo=postgresql&logoColor=white) ![GitHub repo size](https://img.shields.io/github/repo-size/Mateus7799/Autofix?style=for-the-badge&logo=files) ![GitHub directory file count](https://img.shields.io/github/directory-file-count/Mateus7799/Autofix?style=for-the-badge&logo=files) ![GitHub stars](https://img.shields.io/github/stars/Mateus7799/Autofix?style=for-the-badge&logo=github) ![GitHub forks](https://img.shields.io/github/forks/Mateus7799/Autofix?style=for-the-badge&logo=git) ![GitHub language count](https://img.shields.io/github/languages/count/Mateus7799/Autofix?style=for-the-badge&logo=python) ![GitHub license](https://img.shields.io/github/license/Mateus7799/Autofix?style=for-the-badge&color=007ec6&logo=opensourceinitiative) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Mateus7799/Autofix?style=for-the-badge&color=007ec6&logo=gitkraken) ![GitHub last commit](https://img.shields.io/github/last-commit/Mateus7799/Autofix?style=for-the-badge&logo=clockify)
+Sistema web desenvolvido para gerenciar a moeda virtual, com o intuito de estimular o reconhecimento do mérito estudantil.
+O projeto está sendo desenvolvido como parte da disciplina **Laboratório de Desenvolvimento de Software**.
 
 ---
 
 ## 🚧 Status do Projeto
-📌 Projeto acadêmico em desenvolvimento (PUC Minas)
+
+<div align="center">
+
+![Status](https://img.shields.io/badge/STATUS-EM%20DESENVOLVIMENTO-yellow?style=for-the-badge)
+![Versão](https://img.shields.io/badge/VERS%C3%83O-1.0-blue?style=for-the-badge)
+![Licença](https://img.shields.io/badge/LICEN%C3%87A-MIT-green?style=for-the-badge)
+[![GitHub repo size](https://img.shields.io/github/repo-size/Mateus7799/Lab-Dev-sistema-moeda-estudantil?style=for-the-badge)](https://github.com/Mateus7799/Lab-Dev-sistema-moeda-estudantil.git)
+
+</div>
+
+<div align="center">
+
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![RabbitMQ](https://img.shields.io/badge/RabbitMQ-%23FF6600.svg?style=for-the-badge&logo=rabbitmq&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+
+</div>
 
 ---
 
 ## 📚 Índice
 
-- [🔗 Links Úteis](#-links-úteis)
-- [📝 Sobre o Projeto](#-sobre-o-projeto)
-- [✨ Funcionalidades Principais](#-funcionalidades-principais)
-- [🛠 Tecnologias Utilizadas](#-tecnologias-utilizadas)
-- [🏗 Arquitetura](#-arquitetura)
-- [📊 Exemplos de Diagramas](#-exemplos-de-diagramas)
-- [🔧 Instalação e Execução](#-instalação-e-execução)
-- [🔑 Variáveis de Ambiente](#-variáveis-de-ambiente)
-- [📦 Instalação de Dependências](#-instalação-de-dependências)
-- [💾 Banco de Dados](#-banco-de-dados)
-- [⚡ Execução](#-execução)
-- [🐳 Docker](#-docker)
-- [🚀 Deploy](#-deploy)
-- [📂 Estrutura de Pastas](#-estrutura-de-pastas)
-- [🎥 Demonstração](#-demonstração)
-- [🧪 Testes](#-testes)
-- [📚 Documentações](#-documentações)
-- [👥 Autores](#-autores)
-- [🤝 Contribuição](#-contribuição)
-- [🙏 Agradecimentos](#-agradecimentos)
-- [⚖️ Licença](#-licença)
-
----
-
-## 🔗 Links Úteis
-
-- 🌐 Demo Online: Acesse a Aplicação Web Autofix  
-- 📖 Documentação da API: Swagger  
+- [Sobre o Projeto](#sobre-o-projeto)
+- [Principais Características](#principais-características)
+- [Deploy](#-deploy)
+- [Diagramas](#diagramas)
+- [Casos de Uso](#casos-de-uso)
+- [Funcionalidades Principais](#funcionalidades-principais)
+- [Autores](#autores)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Como Executar](#-como-executar)
+- [Tecnologias Utilizadas](#-tecnologias-utilizadas)
 
 ---
 
 ## 📝 Sobre o Projeto
 
-O Autofix foi idealizado para resolver problemas reais do fluxo operacional de oficinas mecânicas:
+Este projeto consiste no desenvolvimento de um sistema web para gerenciamento de uma moeda virtual, com o intuito de estimular o reconhecimento do mérito estudantil.
+O sistema foi projetado com foco em organização, modularidade e clareza estrutural, utilizando conceitos de engenharia de software como modelagem UML, separação de responsabilidades e planejamento orientado a boas práticas de desenvolvimento.
 
-- Falta de sincronização entre setores  
-- Retrabalho operacional  
-- Erros de estoque  
-- Atrasos no atendimento  
+Este projeto está sendo desenvolvido como parte da disciplina **Laboratório de Desenvolvimento de Software**, com o objetivo de aplicar na prática os conceitos estudados ao longo do curso.
 
-### 👥 Atores
+---
 
-- Cliente  
-- Secretário  
-- Mecânico  
-- Gerente  
+## 📌 Principais Características
 
-Projeto desenvolvido na **PUC Minas**.
+- **Arquitetura Full Stack:** Frontend robusto em React e backend escalável com Spring Boot.
+- **Comunicação Segura:** Integração via API REST utilizando Axios e configurações de segurança de CORS.
+- **Persistência Confiável:** Modelagem e mapeamento relacional robusto utilizando Spring Data JPA e banco de dados PostgreSQL.
+- **Processamento Assíncrono:** Arquitetura orientada a eventos utilizando RabbitMQ para garantir resgates de vantagens sem travamento da UI e com alta consistência.
+- **Ambiente Isolado:** Containerização completa da aplicação e banco de dados via Docker e Docker Compose, facilitando o deploy e execução.
+
+---
+
+## 🌐 Deploy
+
+A aplicação está disponível nos seguintes ambientes:
+
+| Serviço | URL |
+|---------|-----|
+| 🔵 Frontend (Vercel) | [lab-dev-sistema-moeda-estudantil.vercel.app](https://lab-dev-sistema-moeda-estudantil.vercel.app/) |
+| 🟢 Backend (Render) | [lab-dev-sistema-moeda-estudantil-zkca.onrender.com](https://lab-dev-sistema-moeda-estudantil-zkca.onrender.com) |
+| 🐘 Banco de Dados (Neon.tech) | PostgreSQL hospedado na Neon.tech |
+
+> ⚠️ **Atenção:** O backend está hospedado no plano gratuito do Render. Após períodos de inatividade, pode haver uma demora de até 1 minuto para a primeira resposta enquanto o serviço é reiniciado.
+
+---
+
+## 📷 Diagramas
+
+### Diagrama de Casos de Uso
+![Casos de Uso](Documentos/Diagramas/Imagens/Diagrama-de-Casos-de-Uso-v3.png)
+
+### Diagrama de Classes
+![Classes](Documentos/Diagramas/Imagens/Diagrama-de-classes.png)
+
+### Diagrama de Componentes
+![Componentes](Documentos/Diagramas/Imagens/diagrama-componentes.png)
+
+### Modelo ER
+![Modelo ER](Documentos/Diagramas/Imagens/Modelo-ER.png)
+
+### Implantação
+![Implantação](Documentos/Diagramas/Imagens/Implantacao.png)
+
+### Comunicação
+![Comunicação](Documentos/Diagramas/Imagens/Comunicacao.png)
+
+---
+
+## 🎬 Casos de Uso (Diagramas de Sequência)
+
+### Geral
+![Geral](Documentos/Diagramas/Imagens/Diagrama-de-Sequencia-Geral.png)
+
+### UC01 - Cadastrar Aluno
+![UC01](Documentos/Diagramas/Imagens/Diagrama-de-Sequencia-UC01.png)
+
+### UC02 - Cadastrar Empresa Parceira
+![UC02](Documentos/Diagramas/Imagens/Diagrama-de-Sequencia-UC02.png)
+
+### UC03 - Login / Autenticação
+![UC03](Documentos/Diagramas/Imagens/Diagrama-de-Sequencia-UC03.png)
+
+### UC04 - Consultar Extrato (Aluno)
+![UC04](Documentos/Diagramas/Imagens/Diagrama-de-Sequencia-UC04.png)
+
+### UC05 - Enviar Moedas (Professor para Aluno)
+![UC05](Documentos/Diagramas/Imagens/Diagrama-de-Sequencia-UC05.png)
+
+### UC06 - Cadastrar Vantagem (Empresa)
+![UC06](Documentos/Diagramas/Imagens/Diagrama-de-Sequencia-UC06.png)
+
+### UC07 - Visualizar Vantagens e Cupons Resgatados (Aluno)
+![UC07](Documentos/Diagramas/Imagens/Diagrama-de-Sequencia-UC07.png)
+
+### UC08 - Resgatar Vantagem (Processamento Assíncrono)
+![UC08](Documentos/Diagramas/Imagens/Diagrama-de-Sequencia-UC08.png)
 
 ---
 
 ## ✨ Funcionalidades Principais
 
-- 🔐 Autenticação com JWT  
-- 🗓️ Agendamento online  
-- 🛠️ Gestão de O.S. e orçamentos  
-- 📦 Controle automático de estoque  
-- 📊 Alertas de estoque mínimo  
+- Cadastro e autenticação de usuários
+- Gerenciamento de alunos, instituições e empresas parceiras
+- Controle de vantagens e benefícios disponíveis
+- Dashboard com informações e funcionalidades específicas por perfil de usuário
 
 ---
 
-## 🛠 Tecnologias Utilizadas
+## 👨‍💻 Autores
 
-### 💻 Front-end
-- React  
-- TypeScript  
-- Tailwind CSS  
-- Vite  
-
-### 🖥️ Back-end
-- Java 17  
-- Spring Boot  
-- JPA / Hibernate  
-- PostgreSQL  
-- JWT  
-
-### ⚙️ Infraestrutura
-- Docker  
-- Docker Compose  
-- Vercel  
+- Arthur Modesto Couto
+- Bernardo Carvalho Denucci Mercado
+- Mateus Azevedo Araújo
+- Matheus Dias Mendes
 
 ---
 
-## 🏗 Arquitetura
+## 📁 Estrutura do Projeto
 
-O sistema segue o padrão **MVC (Model-View-Controller)**:
+```
+Lab-Dev-sistema-moeda-estudantil/
+│
+├── Codigo/
+│   │
+│   ├── backend/
+│   │   ├── pom.xml
+│   │   ├── .gitignore
+│   │   ├── data/
+│   │   │   └── moeda_db.mv.db
+│   │   │
+│   │   ├── src/main/
+│   │   │   ├── java/
+│   │   │   │   └── com/sistemamoedaestudantil/
+│   │   │   │       ├── config/
+│   │   │   │       │   └── CorsConfig.java
+│   │   │   │       │
+│   │   │   │       ├── controller/
+│   │   │   │       │   ├── AuthController.java
+│   │   │   │       │   ├── CadastroController.java
+│   │   │   │       │   ├── InstituicaoController.java
+│   │   │   │       │   └── VantagemController.java
+│   │   │   │       │
+│   │   │   │       ├── dto/
+│   │   │   │       │   ├── request/
+│   │   │   │       │   │   ├── CadastroAlunoRequest.java
+│   │   │   │       │   │   ├── CadastroEmpresaRequest.java
+│   │   │   │       │   │   ├── LoginRequest.java
+│   │   │   │       │   │   └── VantagemRequest.java
+│   │   │   │       │   │
+│   │   │   │       │   └── response/
+│   │   │   │       │       ├── UsuarioResponse.java
+│   │   │   │       │       └── VantagemResponse.java
+│   │   │   │       │
+│   │   │   │       ├── model/
+│   │   │   │       │   ├── Aluno.java
+│   │   │   │       │   ├── EmpresaParceira.java
+│   │   │   │       │   ├── Instituicao.java
+│   │   │   │       │   └── Vantagem.java
+│   │   │   │       │
+│   │   │   │       ├── repository/
+│   │   │   │       │   ├── AlunoRepository.java
+│   │   │   │       │   ├── EmpresaRepository.java
+│   │   │   │       │   ├── InstituicaoRepository.java
+│   │   │   │       │   └── VantagemRepository.java
+│   │   │   │       │
+│   │   │   │       ├── service/
+│   │   │   │       │   ├── AuthService.java
+│   │   │   │       │   ├── CadastroService.java
+│   │   │   │       │   ├── InstituicaoService.java
+│   │   │   │       │   └── VantagemService.java
+│   │   │   │       │
+│   │   │   │       └── SistemaMoedaEstudantilApplication.java
+│   │   │   │
+│   │   │   └── resources/
+│   │   │       ├── application.properties
+│   │   │       └── static/
+│   │   │
+│   │   └── target/                        
+│   │
+│   └── frontend/
+│       ├── package.json
+│       ├── package-lock.json
+│       ├── vite.config.ts
+│       ├── tailwind.config.js
+│       ├── tsconfig.json
+│       ├── eslint.config.js
+│       ├── postcss.config.js
+│       ├── index.html
+│       ├── .gitignore
+│       │
+│       ├── src/
+│       │   ├── main.tsx                     (entry point React)
+│       │   ├── App.tsx                      (rotas principais)
+│       │   ├── App.css
+│       │   ├── index.css
+│       │   │
+│       │   ├── assets/
+│       │   │
+│       │   ├── components/
+│       │   │   ├── Navbar.tsx
+│       │   │   ├── Sidebar.tsx
+│       │   │   ├── CardDashboard.tsx
+│       │   │   └── FormularioCadastro.tsx
+│       │   │
+│       │   ├── context/
+│       │   │   └── AuthContext.tsx
+│       │   │
+│       │   ├── services/
+│       │   │   ├── api.ts
+│       │   │   ├── authService.ts
+│       │   │   ├── alunoService.ts
+│       │   │   ├── instituicaoService.ts
+│       │   │   └── vantagemService.ts
+│       │   │
+│       │   ├── types/
+│       │   │   └── index.ts
+│       │   │
+│       │   └── pages/
+│       │       ├── LoginPage.tsx
+│       │       ├── CadastroAlunoPage.tsx
+│       │       ├── DashboardProfessorPage.tsx
+│       │       └── DashboardEmpresaPage.tsx
+│       │
+│       └── dist/                            (build - ignorado)
+│
+├── docker-compose.yml
+├── COMO_EXECUTAR.md
+└── README.md
 
-- Controller → recebe requisições  
-- Service → regras de negócio  
-- Repository → acesso ao banco  
 
-### 🧬 Modelagem
-
-- Herança com estratégia **JOINED**  
-- Normalização de dados  
-
----
-
-## 📊 Exemplos de Diagramas
-
-- Diagrama de Arquitetura  
-- Modelo C4  
-- Diagramas de Sequência / Comunicação  
-- DER (Modelo de Dados)  
-- Diagrama de Estados  
-
----
-
-## 🔧 Instalação e Execução
-
-### ✅ Pré-requisitos
-
-- Java 17+  
-- Node.js 18+  
-- Docker  
-
----
-
-## 🔑 Variáveis de Ambiente
-
-### Back-end
-
-```env
-SERVER_PORT=8080
-SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/autofix
-SPRING_DATASOURCE_USERNAME=postgres
-SPRING_DATASOURCE_PASSWORD=senha-segura-123
 ```
 
-### Front-end
-
-```env
-VITE_API_URL=http://localhost:8080/api
-```
-
 ---
 
-## 📦 Instalação de Dependências
+# 🚀 Como Executar
+
+## Frontend
+
+1. Acesse a pasta do frontend:
 
 ```bash
-git clone https://github.com/seu-usuario/autofix.git
-cd autofix
+cd Codigo/frontend
 ```
 
-### Front-end
+2. Instale as dependências:
 
 ```bash
-cd frontend
 npm install
-cd ..
 ```
 
-### Back-end
+3. Execute o projeto:
 
 ```bash
-cd backend
-./mvnw clean install
-cd ..
-```
-
----
-
-## 💾 Banco de Dados
-
-```bash
-docker run --name autofix_db \
--e POSTGRES_USER=postgres \
--e POSTGRES_PASSWORD=senha-segura-123 \
--e POSTGRES_DB=autofix \
--p 5432:5432 -d postgres:16
-```
-
-> ✅ As tabelas são criadas automaticamente via Hibernate (`ddl-auto: update`)
-
----
-
-## ⚡ Execução
-
-### Terminal 1 – Back-end
-
-```bash
-cd backend
-./mvnw spring-boot:run
-```
-
-➡️ http://localhost:8080
-
-### Terminal 2 – Front-end
-
-```bash
-cd frontend
 npm run dev
 ```
 
-➡️ http://localhost:5173
+4. O frontend estará disponível em:
+
+```txt
+http://localhost:5173
+```
 
 ---
 
-## 🐳 Docker
+## Backend
+
+1. Acesse a pasta do backend:
 
 ```bash
-docker-compose up --build -d
+cd Codigo/backend
 ```
 
-Para parar:
+2. Execute o projeto Spring Boot:
+
+### Linux/Mac
+
+```bash
+./mvnw spring-boot:run
+```
+
+### Windows PowerShell
+
+```powershell
+mvnw spring-boot:run
+```
+
+Ou, caso tenha Maven instalado globalmente:
+
+```bash
+mvn spring-boot:run
+```
+
+3. O backend estará disponível em:
+
+```txt
+http://localhost:8080
+```
+
+---
+
+## Docker
+
+Na pasta `Codigo` execute:
+
+```bash
+docker-compose up --build
+```
+
+Para executar em segundo plano:
+
+```bash
+docker-compose up -d
+```
+
+Para encerrar os containers:
 
 ```bash
 docker-compose down
@@ -236,87 +352,29 @@ docker-compose down
 
 ---
 
-## 🚀 Deploy
+# 🛠️ Tecnologias Utilizadas
 
-```bash
-cd frontend && npm run build
-cd ..
-cd backend && ./mvnw clean package
-cd ..
-```
+## Frontend
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Router DOM
+- Axios
 
----
+## Backend
+- Java 21
+- Spring Boot
+- Spring Web
+- Spring Data JPA
+- Maven
+- Spring AMQP (RabbitMQ)
 
-## 📂 Estrutura de Pastas
+## Banco de Dados
+- PostgreSQL (Neon.tech)
 
-```
-.
-├── docker-compose.yml
-├── README.md
-├── frontend
-│   ├── src
-│   └── public
-└── backend
-    ├── controller
-    ├── service
-    ├── repository
-    ├── model
-    └── dto
-```
-
----
-
-## 🎥 Demonstração
-
-- Painel do Mecânico  
-- Controle de Ordens de Serviço  
-
----
-
-## 🧪 Testes
-
-```bash
-cd backend
-./mvnw test
-```
-
-- Testes unitários (Mockito)  
-- Testes de integração (JPA)  
-
----
-
-## 📚 Documentações
-
-- Spring Boot  
-- React  
-- Hibernate  
-- PostgreSQL  
-
----
-
-## 👥 Autores
-
-- Mateus Azevedo Araújo  
-
----
-
-## 🤝 Contribuição
-
-1. Fork do projeto  
-2. Criar branch (`git checkout -b feature/nome`)  
-3. Commit (`git commit -m 'feat: nova funcionalidade'`)  
-4. Push (`git push origin feature/nome`)  
-5. Abrir Pull Request  
-
----
-
-## 🙏 Agradecimentos
-
-Ao Prof. Dr. João Paulo Aramuni pelo suporte acadêmico.
-
----
-
-## ⚖️ Licença
-
-MIT
-``
+## DevOps
+- Docker
+- Docker Compose
+- Vercel (Frontend)
+- Render (Backend)
